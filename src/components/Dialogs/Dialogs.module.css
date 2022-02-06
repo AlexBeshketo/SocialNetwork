@@ -1,0 +1,35 @@
+
+.dialogs {
+display: grid;
+    grid-template-columns: 2fr 10fr ;
+}
+
+.usersList {
+padding: 10px;
+}
+
+.user.active {
+color: gold;
+}
+
+.user a {
+color: black;
+    text-decoration: none;
+}
+
+
+
+.messages {
+    padding: 10px;
+
+}
+.message{
+
+}
+
+
+
+
+.img {
+    width: 800px
+}

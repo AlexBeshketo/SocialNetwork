@@ -1,0 +1,36 @@
+
+.nav {
+    grid-area: nav;
+    background-color: darkgrey;
+    padding: 20px;
+}
+/*.item  {*/
+/*    color: #ad8b8b;*/
+
+/*}*/
+
+
+.item a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.item a.active {
+    color: #0e0e0e;
+}
+
+.friends {
+    font-size: 20px;
+    padding-top: 100px;
+}
+
+.dot {
+    font-size: 10px;
+    text-align: center;
+    height: 30px;
+    width: 40px;
+    background-color: yellow;
+    border-radius: 50%;
+    display: inline-block;
+
+}
