@@ -8,7 +8,7 @@ import {Route, Routes} from "react-router-dom";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import News from "./components/News/News";
-import state, { addPostPropsType, RootePropsType, updatePostPropsType} from "./state/state";
+import  { addPostPropsType, RootePropsType, updatePostPropsType} from "./state/state";
 
 
 type AppPropsType= {
@@ -19,11 +19,11 @@ type AppPropsType= {
 
 function App(props:AppPropsType) {
 
-    const profilePage = state.profilePage
-    const dialogs = state.dialogsPage.users
-    const messages = state.dialogsPage.messages
-    const navbarPage = state.sideBar.names
-    const navbarPageBoolean=state.sideBar.isTrue;
+    const profilePage = props.state.profilePage
+    const dialogs = props.state.dialogsPage.users
+    const messages = props.state.dialogsPage.messages
+    const navbarPage = props.state.sideBar.names
+    const navbarPageBoolean=props.state.sideBar.isTrue;
 
     return (
 

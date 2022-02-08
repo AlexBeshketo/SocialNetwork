@@ -1,25 +1,28 @@
 import React from 'react';
 import './index.css';
-import state, {addPost, RootePropsType, updatePost} from "./state/state";
 import ReactDOM from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
+import {store} from "./state/state";
 
 
-export let rerenderEntireTree = (state:RootePropsType )=> {
+
+
+export let rerenderEntireTree = ( )=> {
     ReactDOM.render(
 
         <React.StrictMode>
             <BrowserRouter>
-                <App state={state}  addPost={addPost}  updatePost={updatePost} />
+                <App state={store.getState()}  addPost={store.addPost.bind(store)}  updatePost={store.updatePost.bind(store)} />
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')
     );
 
 }
+rerenderEntireTree();
+store.subscribe(rerenderEntireTree)
 
-rerenderEntireTree(state);
 
 
 

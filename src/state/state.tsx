@@ -2,6 +2,9 @@ import React from "react";
 import {rerenderEntireTree} from "../index";
 
 
+
+
+
 export type PostsPropsType = {
     id: number,
     message: string,
@@ -31,71 +34,145 @@ export type SideBarPageType = {
     isTrue: boolean
 }
 
-
 export type RootePropsType = {
     profilePage: ProfilePageType,
     dialogsPage: DialogsPageType,
     sideBar: SideBarPageType,
 }
+export type updatePostPropsType = (newText: string) => void
+export type addPostPropsType = (postMessage: string) => void
+export type rerenderPropsType= () => void
+
+export type storePropsType = {
+    _state:RootePropsType,
+    getState:()=> RootePropsType
+    addPost:addPostPropsType,
+    updatePost:updatePostPropsType,
+    _onChange: ()=> void,
+    subscribe: (callback: ()=> void) => void
+
+}
 
 
-const state: RootePropsType = {
-    profilePage: {
-        posts: [
-            {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
-            {id: 2, message: 'Its my first post ', like: 1, follow: 2},
-        ],
-        newPost: 'It-kamasutra'
+export const store:storePropsType = {
+    _state: {
+        profilePage: {
+            posts: [
+                {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
+                {id: 2, message: 'Its my first post ', like: 1, follow: 2},
+            ],
+            newPost: 'It-kamasutra'
+        },
+        dialogsPage: {
+            users: [
+                {name: 'Sveta', id: 1},
+                {name: 'Kolya', id: 2},
+                {name: 'Masha', id: 3},
+                {name: 'Natasha', id: 4},
+            ],
+            messages: [
+                {message: 'Hi , how are you ?', id: 1},
+                {message: 'What is the weather today?', id: 2},
+                {message: 'Common, guy', id: 3},
+                {message: 'Are you nigger?', id: 4},
+            ]
+        },
+        sideBar: {
+            names: [
+                {name: 'Sveta', id: 1},
+                {name: 'Kolya', id: 2},
+                {name: 'Masha', id: 3},
+                {name: 'Natasha', id: 4}
+            ],
+            isTrue: true
+        }
     },
-    dialogsPage: {
-        users: [
-            {name: 'Sveta', id: 1},
-            {name: 'Kolya', id: 2},
-            {name: 'Masha', id: 3},
-            {name: 'Natasha', id: 4},
-        ],
-        messages: [
-            {message: 'Hi , how are you ?', id: 1},
-            {message: 'What is the weather today?', id: 2},
-            {message: 'Common, guy', id: 3},
-            {message: 'Are you nigger?', id: 4},
-        ]
+    getState() {
+        return this._state
     },
-    sideBar: {
-        names: [
-            {name: 'Sveta', id: 1},
-            {name: 'Kolya', id: 2},
-            {name: 'Masha', id: 3},
-            {name: 'Natasha', id: 4}
-        ],
-        isTrue: true
+    addPost() {
+        let newPost: PostsPropsType = {
+            id: new Date().getTime(),
+            message:  this._state.profilePage.newPost,
+            like: 0,
+            follow: 0
+        };
+        this._state.profilePage.posts.push(newPost)
+        this._state.profilePage.newPost = ''
+        this._onChange()
+    },
+    updatePost  (newText: string)  {
+        this._state.profilePage.newPost = (newText)
+        this._onChange()
+    },
+    _onChange () {
+        console.log('state changed')
+    },
+    subscribe (callback) {
+        this._onChange=callback
     }
 }
 
 
-export type addPostPropsType = (postMessage:string)=>void
 
-export const addPost = () => {
-
-let newPost:PostsPropsType= {
-    id: new Date().getTime(),
-    message: state.profilePage.newPost,
-    like: 0,
-    follow: 0
-};
-    state.profilePage.posts.push(newPost)
-    state.profilePage.newPost=''
-    rerenderEntireTree(state)
-}
+// let onChange= ()=> {
+//     console.log('hello')
+// }
 
 
 
-export type updatePostPropsType = (newText:string)=>void
+//
+// const state: RootePropsType = {
+//     profilePage: {
+//         posts: [
+//             {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
+//             {id: 2, message: 'Its my first post ', like: 1, follow: 2},
+//         ],
+//         newPost: 'It-kamasutra'
+//     },
+//     dialogsPage: {
+//         users: [
+//             {name: 'Sveta', id: 1},
+//             {name: 'Kolya', id: 2},
+//             {name: 'Masha', id: 3},
+//             {name: 'Natasha', id: 4},
+//         ],
+//         messages: [
+//             {message: 'Hi , how are you ?', id: 1},
+//             {message: 'What is the weather today?', id: 2},
+//             {message: 'Common, guy', id: 3},
+//             {message: 'Are you nigger?', id: 4},
+//         ]
+//     },
+//     sideBar: {
+//         names: [
+//             {name: 'Sveta', id: 1},
+//             {name: 'Kolya', id: 2},
+//             {name: 'Masha', id: 3},
+//             {name: 'Natasha', id: 4}
+//         ],
+//         isTrue: true
+//     }
+// }
 
-export const updatePost = (newText:string) => {
-    state.profilePage.newPost=(newText)
-    rerenderEntireTree(state)
-}
 
 
-export default state
+// export const addPost = () => {
+//
+//     let newPost: PostsPropsType = {
+//         id: new Date().getTime(),
+//         message: state.profilePage.newPost,
+//         like: 0,
+//         follow: 0
+//     };
+//     state.profilePage.posts.push(newPost)
+//     state.profilePage.newPost = ''
+//     rerenderEntireTree()
+// }
+
+
+
+
+
+
+

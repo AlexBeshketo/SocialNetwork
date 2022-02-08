@@ -25,6 +25,7 @@ function Posts(props: PostsPostType) {
 
 
     const addPost = (e:  React.MouseEvent<HTMLButtonElement>) => {
+        debugger;
         props.addPost(props.newPost)
 
     }
