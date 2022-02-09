@@ -1,6 +1,11 @@
 import Post from "./Post/Post";
 import p from './Posts.module.css'
-import {addPostPropsType, PostsPropsType, updatePostPropsType} from "../../../state/state";
+import {
+    ActionTypes,
+    addPostActionCreator, addPostActionType,
+    PostsPropsType,
+    updatePostActionCreator, updatePostActionType,
+} from "../../../state/state";
 import React, {ChangeEvent} from "react";
 
 // let postsData = [
@@ -12,26 +17,32 @@ import React, {ChangeEvent} from "react";
 type PostsPostType = {
     posts: PostsPropsType[]
     newPost: string
-    addPost: addPostPropsType,
-    updatePost: updatePostPropsType
+    // addPost: addPostPropsType,
+    // updatePost: updatePostPropsType
+    dispatch: (action: ActionTypes) => void
 }
 
 
-function Posts(props: PostsPostType) {
+
+
+
+function Posts({dispatch, ...props}: PostsPostType) {
 
 
     let postsElement = props.posts
         .map((p => <Post key={p.id} id={p.id} message={p.message} like={p.like} follow={p.follow}/>))
 
 
-    const addPost = (e:  React.MouseEvent<HTMLButtonElement>) => {
-        debugger;
-        props.addPost(props.newPost)
+    const addPost = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+        dispatch(addPostActionCreator())
 
     }
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.updatePost(e.currentTarget.value)
+
+
+        dispatch(updatePostActionCreator(e.currentTarget.value ))
 
     }
 

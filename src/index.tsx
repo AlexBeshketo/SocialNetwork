@@ -8,12 +8,13 @@ import {store} from "./state/state";
 
 
 
-export let rerenderEntireTree = ( )=> {
+const rerenderEntireTree = ( )=> {
+
     ReactDOM.render(
 
         <React.StrictMode>
             <BrowserRouter>
-                <App state={store.getState()}  addPost={store.addPost.bind(store)}  updatePost={store.updatePost.bind(store)} />
+                <App store={store} dispatch={store.dispatch.bind(store)}  />
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')

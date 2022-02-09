@@ -1,6 +1,4 @@
-import React from "react";
-import {rerenderEntireTree} from "../index";
-
+import React, {ChangeEvent} from "react";
 
 
 
@@ -11,7 +9,6 @@ export type PostsPropsType = {
     like: number,
     follow: number
 }
-
 export type DialogsPropsType = {
     name: string,
     id: number
@@ -20,7 +17,6 @@ export type MessagesPropsType = {
     message: string,
     id: number,
 }
-
 export type ProfilePageType = {
     posts: Array<PostsPropsType>,
     newPost: string
@@ -43,18 +39,47 @@ export type updatePostPropsType = (newText: string) => void
 export type addPostPropsType = (postMessage: string) => void
 export type rerenderPropsType= () => void
 
-export type storePropsType = {
+export type StorePropsType = {
     _state:RootePropsType,
     getState:()=> RootePropsType
     addPost:addPostPropsType,
     updatePost:updatePostPropsType,
     _onChange: ()=> void,
     subscribe: (callback: ()=> void) => void
+    dispatch: (action:ActionTypes )=> void
+
+}
+
+export type ActionTypes = addPostActionType|updatePostActionType
+
+// export type AddPostActionType= {
+//     type:"ADD-POST",
+//
+// }
+// export type UpdatePostActionType= {
+//     type:"UPDATE-POST",
+//     newText: string
+//     }
+
+
+export type addPostActionType=ReturnType<typeof addPostActionCreator >
+export type updatePostActionType=ReturnType<typeof updatePostActionCreator >
+
+export const addPostActionCreator = () => {
+    return {type: "ADD-POST"} as const
+}
+
+
+export const updatePostActionCreator = (newText:string) => {
+    return        {
+        type: "UPDATE-POST",
+        newText: newText
+    } as const
 
 }
 
 
-export const store:storePropsType = {
+export const store:StorePropsType = {
     _state: {
         profilePage: {
             posts: [
@@ -102,7 +127,7 @@ export const store:storePropsType = {
         this._onChange()
     },
     updatePost  (newText: string)  {
-        this._state.profilePage.newPost = (newText)
+        this._state.profilePage.newPost = newText
         this._onChange()
     },
     _onChange () {
@@ -110,10 +135,29 @@ export const store:storePropsType = {
     },
     subscribe (callback) {
         this._onChange=callback
+    },
+    dispatch(action) {
+        if (action.type=== "ADD-POST") {
+            let newPost: PostsPropsType = {
+                id: new Date().getTime(),
+                message:  this._state.profilePage.newPost,
+                like: 0,
+                follow: 0
+            };
+            this._state.profilePage.posts.push(newPost)
+            this._state.profilePage.newPost = ''
+            this._onChange()
+        }
+        else if(action.type=== "UPDATE-POST") {
+            this._state.profilePage.newPost = action.newText;
+            this._onChange()
+        }
     }
 }
 
 
+
+// export type ActionTypes= addPostActionType| updatePostActionType
 
 // let onChange= ()=> {
 //     console.log('hello')

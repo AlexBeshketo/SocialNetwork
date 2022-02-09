@@ -8,33 +8,35 @@ import {Route, Routes} from "react-router-dom";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import News from "./components/News/News";
-import  { addPostPropsType, RootePropsType, updatePostPropsType} from "./state/state";
+import {ActionTypes, StorePropsType} from "./state/state";
 
 
-type AppPropsType= {
-    state:RootePropsType,
-    addPost:addPostPropsType,
-    updatePost:updatePostPropsType
-}
+type AppPropsType = {
+    store: StorePropsType,
+    dispatch: (action:ActionTypes )=> void
+    }
 
-function App(props:AppPropsType) {
+function App ({dispatch, ...props}:AppPropsType) {
 
-    const profilePage = props.state.profilePage
-    const dialogs = props.state.dialogsPage.users
-    const messages = props.state.dialogsPage.messages
-    const navbarPage = props.state.sideBar.names
-    const navbarPageBoolean=props.state.sideBar.isTrue;
+
+    let store= props.store.getState()
+
+    const profilePage = store.profilePage
+    const dialogs = store.dialogsPage.users
+    const messages = store.dialogsPage.messages
+    const navbarPage = store.sideBar.names
+    const navbarPageBoolean = store.sideBar.isTrue;
 
     return (
 
         <div className='app-wrapper'>
             <Header/>
-            <Navbar names={navbarPage} isTrue={navbarPageBoolean} />
+            <Navbar names={navbarPage} isTrue={navbarPageBoolean}/>
 
             <div className='app-wrapper-content'>
                 <Routes>
-                    <Route path={'/profile'} element={<Profile profilePage={profilePage} addPost={props.addPost}  updatePost={props.updatePost} />}/>
-                    <Route path={'/dialogs'} element={<Dialogs users={dialogs} messages={messages} />}/>
+                    <Route path={'/profile'} element={<Profile profilePage={profilePage} dispatch={dispatch}/>}/>
+                    <Route path={'/dialogs'} element={<Dialogs users={dialogs} messages={messages}/>}/>
                     <Route path={'/news'} element={<News/>}/>
                     <Route path={'/music'} element={<Music/>}/>
                     <Route path={'/settings'} element={<Settings/>}/>

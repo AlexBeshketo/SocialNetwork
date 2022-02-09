@@ -1,6 +1,8 @@
 import Posts from "./Posts/Posts";
 import ProfileInfo from "./AvaInfo/ProfileInfo";
-import {addPostPropsType, PostsPropsType, updatePostPropsType} from "../../state/state";
+import {
+    ActionTypes, PostsPropsType,
+} from "../../state/state";
 import React from "react";
 import k from './Profile.module.css'
 
@@ -12,16 +14,15 @@ type ProfilePostType = {
         posts: Array<PostsPropsType>
         newPost: string
     }
-    addPost:addPostPropsType
-    updatePost:updatePostPropsType
+    dispatch: (action:ActionTypes )=> void
 }
 
-function Profile  (props:ProfilePostType)  {
+function Profile  ({dispatch, ...props}:ProfilePostType )  {
     return (
         < div className={k.content}>
             <ProfileInfo/>
 
-            <Posts posts={props.profilePage.posts} newPost={props.profilePage.newPost} addPost={props.addPost} updatePost={props.updatePost}/>
+            <Posts posts={props.profilePage.posts} newPost={props.profilePage.newPost} dispatch={dispatch} />
 
         </div>
     )
