@@ -1,12 +1,8 @@
 import Post from "./Post/Post";
 import p from './Posts.module.css'
-import {
-    ActionTypes,
-    addPostActionCreator, addPostActionType,
-    PostsPropsType,
-    updatePostActionCreator, updatePostActionType,
-} from "../../../state/state";
+import {ActionTypes, PostsPropsType,} from "../../../state/state";
 import React, {ChangeEvent} from "react";
+import {addPostActionCreator, updatePostActionCreator} from "../../../state/profile-reducer";
 
 // let postsData = [
 //     {id: 1, message: 'Hi, how are you?' , like: 2 , follow: 2} ,
@@ -23,9 +19,6 @@ type PostsPostType = {
 }
 
 
-
-
-
 function Posts({dispatch, ...props}: PostsPostType) {
 
 
@@ -34,16 +27,11 @@ function Posts({dispatch, ...props}: PostsPostType) {
 
 
     const addPost = (e: React.MouseEvent<HTMLButtonElement>) => {
-
         dispatch(addPostActionCreator())
-
     }
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-
-
-        dispatch(updatePostActionCreator(e.currentTarget.value ))
-
+        dispatch(updatePostActionCreator(e.currentTarget.value))
     }
 
     return (

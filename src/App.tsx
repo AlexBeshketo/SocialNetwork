@@ -23,6 +23,7 @@ function App ({dispatch, ...props}:AppPropsType) {
 
     const profilePage = store.profilePage
     const dialogs = store.dialogsPage.users
+    const newMessagesBody=store.dialogsPage.newMessagesBody
     const messages = store.dialogsPage.messages
     const navbarPage = store.sideBar.names
     const navbarPageBoolean = store.sideBar.isTrue;
@@ -36,7 +37,7 @@ function App ({dispatch, ...props}:AppPropsType) {
             <div className='app-wrapper-content'>
                 <Routes>
                     <Route path={'/profile'} element={<Profile profilePage={profilePage} dispatch={dispatch}/>}/>
-                    <Route path={'/dialogs'} element={<Dialogs users={dialogs} messages={messages}/>}/>
+                    <Route path={'/dialogs'} element={<Dialogs newMessagesBody={newMessagesBody} dispatch={dispatch} users={dialogs} messages={messages}/>}/>
                     <Route path={'/news'} element={<News/>}/>
                     <Route path={'/music'} element={<Music/>}/>
                     <Route path={'/settings'} element={<Settings/>}/>

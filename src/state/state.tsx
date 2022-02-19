@@ -1,7 +1,7 @@
-import React, {ChangeEvent} from "react";
 
-
-
+import {addPostActionCreator, profileReducer, updatePostActionCreator} from "./profile-reducer";
+import {sidebarReducer} from "./sidebar-reducer";
+import {AddNewMessageActionCreator, messagesReducer, updateNewMessageActionCreator} from "./messages-reducer";
 
 export type PostsPropsType = {
     id: number,
@@ -23,7 +23,8 @@ export type ProfilePageType = {
 }
 export type DialogsPageType = {
     users: Array<DialogsPropsType>,
-    messages: Array<MessagesPropsType>
+    messages: Array<MessagesPropsType>,
+    newMessagesBody: string
 }
 export type SideBarPageType = {
     names: Array<DialogsPropsType>,
@@ -35,22 +36,25 @@ export type RootePropsType = {
     dialogsPage: DialogsPageType,
     sideBar: SideBarPageType,
 }
-export type updatePostPropsType = (newText: string) => void
-export type addPostPropsType = (postMessage: string) => void
-export type rerenderPropsType= () => void
+
+export type rerenderPropsType = () => void
 
 export type StorePropsType = {
-    _state:RootePropsType,
-    getState:()=> RootePropsType
-    addPost:addPostPropsType,
-    updatePost:updatePostPropsType,
-    _onChange: ()=> void,
-    subscribe: (callback: ()=> void) => void
-    dispatch: (action:ActionTypes )=> void
+    _state: RootePropsType,
+    getState: () => RootePropsType
+    // addPost:addPostPropsType,
+    // updatePost:updatePostPropsType,
+    _onChange: () => void,
+    subscribe: (callback: () => void) => void
+    dispatch: (action: ActionTypes) => void
 
 }
 
-export type ActionTypes = addPostActionType|updatePostActionType
+export type ActionTypes =
+    addPostActionType
+    | updatePostActionType
+    | updateNewMessageActionType
+    | ADDNewMessageActionType
 
 // export type AddPostActionType= {
 //     type:"ADD-POST",
@@ -62,24 +66,18 @@ export type ActionTypes = addPostActionType|updatePostActionType
 //     }
 
 
-export type addPostActionType=ReturnType<typeof addPostActionCreator >
-export type updatePostActionType=ReturnType<typeof updatePostActionCreator >
-
-export const addPostActionCreator = () => {
-    return {type: "ADD-POST"} as const
-}
+export type addPostActionType = ReturnType<typeof addPostActionCreator>
+export type updatePostActionType = ReturnType<typeof updatePostActionCreator>
+export type updateNewMessageActionType = ReturnType<typeof updateNewMessageActionCreator>
+export type ADDNewMessageActionType = ReturnType<typeof AddNewMessageActionCreator>
 
 
-export const updatePostActionCreator = (newText:string) => {
-    return        {
-        type: "UPDATE-POST",
-        newText: newText
-    } as const
-
-}
 
 
-export const store:StorePropsType = {
+
+
+
+export const store: StorePropsType = {
     _state: {
         profilePage: {
             posts: [
@@ -100,7 +98,8 @@ export const store:StorePropsType = {
                 {message: 'What is the weather today?', id: 2},
                 {message: 'Common, guy', id: 3},
                 {message: 'Are you nigger?', id: 4},
-            ]
+            ],
+            newMessagesBody: ''
         },
         sideBar: {
             names: [
@@ -115,46 +114,21 @@ export const store:StorePropsType = {
     getState() {
         return this._state
     },
-    addPost() {
-        let newPost: PostsPropsType = {
-            id: new Date().getTime(),
-            message:  this._state.profilePage.newPost,
-            like: 0,
-            follow: 0
-        };
-        this._state.profilePage.posts.push(newPost)
-        this._state.profilePage.newPost = ''
-        this._onChange()
-    },
-    updatePost  (newText: string)  {
-        this._state.profilePage.newPost = newText
-        this._onChange()
-    },
-    _onChange () {
+
+    _onChange() {
         console.log('state changed')
     },
-    subscribe (callback) {
-        this._onChange=callback
+    subscribe(callback) {
+        this._onChange = callback
     },
     dispatch(action) {
-        if (action.type=== "ADD-POST") {
-            let newPost: PostsPropsType = {
-                id: new Date().getTime(),
-                message:  this._state.profilePage.newPost,
-                like: 0,
-                follow: 0
-            };
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPost = ''
-            this._onChange()
-        }
-        else if(action.type=== "UPDATE-POST") {
-            this._state.profilePage.newPost = action.newText;
-            this._onChange()
+
+        this._state.profilePage= profileReducer(this._state.profilePage, action)
+        this._state.sideBar= sidebarReducer(this._state.sideBar, action)
+        this._state.dialogsPage= messagesReducer(this._state.dialogsPage, action)
+        this._onChange()
         }
     }
-}
-
 
 
 // export type ActionTypes= addPostActionType| updatePostActionType
@@ -162,7 +136,6 @@ export const store:StorePropsType = {
 // let onChange= ()=> {
 //     console.log('hello')
 // }
-
 
 
 //
@@ -198,7 +171,6 @@ export const store:StorePropsType = {
 //         isTrue: true
 //     }
 // }
-
 
 
 // export const addPost = () => {

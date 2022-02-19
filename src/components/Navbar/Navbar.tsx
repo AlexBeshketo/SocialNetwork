@@ -11,7 +11,7 @@ function Navbar(props:SideBarPageType ) {
     const checkActive = (isTrue?:boolean) =>  (!isTrue ? '' : n.active)
 
 
-    const friends = props.names.map((post) => <div className={n.dot}>{post.name}</div>)
+    const friends = props.names.map((post) => <div key={post.id} className={n.dot}>{post.name}</div>)
 
 
     return (

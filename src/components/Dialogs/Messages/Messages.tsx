@@ -3,6 +3,7 @@ import React from "react";
 
 type MessagesPropsType = {
     message: string
+    key:number
 }
 
 export function Messages(props: MessagesPropsType) {
@@ -16,8 +17,8 @@ export function Messages(props: MessagesPropsType) {
     return (
         <>
             <div className={h.message}>{props.message}</div>
-            <textarea >text</textarea>
-            <button >ADD</button>
+            {/*<textarea >text</textarea>*/}
+            {/*<button >ADD</button>*/}
         </>
     )
 }
