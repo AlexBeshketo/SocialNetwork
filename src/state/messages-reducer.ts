@@ -14,7 +14,24 @@ export const AddNewMessageActionCreator = () => {
     } as const
 }
 
-export const messagesReducer = (dialogsPage: DialogsPageType, action: ActionTypes) => {
+
+let initialStateOfDialogsPage = {
+           users: [
+            {name: 'Sveta', id: 1},
+            {name: 'Kolya', id: 2},
+            {name: 'Masha', id: 3},
+            {name: 'Natasha', id: 4},
+        ],
+        messages: [
+            {message: 'Hi , how are you ?', id: 1},
+            {message: 'What is the weather today?', id: 2},
+            {message: 'Common, guy', id: 3},
+            {message: 'Are you nigger?', id: 4},
+        ],
+        newMessagesBody: ''
+    }
+
+export const messagesReducer = (dialogsPage: DialogsPageType = initialStateOfDialogsPage, action: ActionTypes) => {
 
     switch (action.type) {
         case "UPDATE-NEW-MESSAGE":

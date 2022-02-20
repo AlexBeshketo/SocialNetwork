@@ -3,12 +3,13 @@ import './index.css';
 import ReactDOM from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
-import {store} from "./state/state";
+import {RootePropsType, store} from "./state/state";
 
 
 
 
-const rerenderEntireTree = ( )=> {
+
+const rerenderEntireTree = (state:RootePropsType)=> {
 
     ReactDOM.render(
 
@@ -21,9 +22,8 @@ const rerenderEntireTree = ( )=> {
     );
 
 }
-rerenderEntireTree();
-store.subscribe(rerenderEntireTree)
-
-
-
-
+rerenderEntireTree(store.getState());
+store.subscribe(()=> {
+    let state = store.getState()
+    rerenderEntireTree(state)
+})

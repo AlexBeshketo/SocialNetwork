@@ -1,8 +1,8 @@
 import Post from "./Post/Post";
 import p from './Posts.module.css'
-import {ActionTypes, PostsPropsType,} from "../../../state/state";
+import { PostsPropsType,} from "../../../state/state";
 import React, {ChangeEvent} from "react";
-import {addPostActionCreator, updatePostActionCreator} from "../../../state/profile-reducer";
+
 
 // let postsData = [
 //     {id: 1, message: 'Hi, how are you?' , like: 2 , follow: 2} ,
@@ -15,23 +15,22 @@ type PostsPostType = {
     newPost: string
     // addPost: addPostPropsType,
     // updatePost: updatePostPropsType
-    dispatch: (action: ActionTypes) => void
+    addPost: ()=> void
+    onChangeCallback: (text:string)=> void
 }
 
 
-function Posts({dispatch, ...props}: PostsPostType) {
-
+function Posts(props: PostsPostType) {
 
     let postsElement = props.posts
         .map((p => <Post key={p.id} id={p.id} message={p.message} like={p.like} follow={p.follow}/>))
 
-
     const addPost = (e: React.MouseEvent<HTMLButtonElement>) => {
-        dispatch(addPostActionCreator())
+        props.addPost()
     }
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        dispatch(updatePostActionCreator(e.currentTarget.value))
+        props.onChangeCallback(e.currentTarget.value)
     }
 
     return (
