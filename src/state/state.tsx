@@ -37,9 +37,9 @@ export type RootePropsType = {
     sideBar: SideBarPageType,
 }
 
-export type rerenderPropsType = () => void
+ type rerenderPropsType = () => void
 
-export type StorePropsType = {
+ export type StorePropsType = {
     _state: RootePropsType,
     getState: () => RootePropsType
     // addPost:addPostPropsType,
@@ -50,7 +50,7 @@ export type StorePropsType = {
 
 }
 
-export type ActionTypes =
+ export type ActionTypes =
     addPostActionType
     | updatePostActionType
     | updateNewMessageActionType
@@ -70,10 +70,6 @@ export type addPostActionType = ReturnType<typeof addPostActionCreator>
 export type updatePostActionType = ReturnType<typeof updatePostActionCreator>
 export type updateNewMessageActionType = ReturnType<typeof updateNewMessageActionCreator>
 export type ADDNewMessageActionType = ReturnType<typeof AddNewMessageActionCreator>
-
-
-
-
 
 
 

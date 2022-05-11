@@ -1,41 +1,46 @@
 import React from "react";
 import './App.css';
-import Navbar from "./components/Navbar/Navbar";
 import Header from "./components/Header/Header";
 import Profile from "./components/Profile/Profile";
-import Dialogs from "./components/Dialogs/Dialogs";
 import {Route, Routes} from "react-router-dom";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 import News from "./components/News/News";
-import {ActionTypes, StorePropsType} from "./state/state";
+
+
+import {NavbarContainer} from "./components/Navbar/NavbarContainer";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
+import {ActionTypes, AppStateType} from "./state/redux-store";
 
 
-type AppPropsType = {
-    store: StorePropsType,
-    dispatch: (action:ActionTypes )=> void
+
+
+
+export type AppPropsType = {
+    store: AppStateType,
+    dispatch: (action: ActionTypes  )=> void
     }
 
-function App ({dispatch, ...props}:AppPropsType) {
+function App (props:AppPropsType) {
 
 
-    let store= props.store.getState()
-    //
-    // const profilePage = store.profilePage
-    // const dialogs = store.dialogsPage.users
-    // const newMessagesBody=store.dialogsPage.newMessagesBody
-    // const messages = store.dialogsPage.messages
-    const navbarPage = store.sideBar.names
-    const navbarPageBoolean = store.sideBar.isTrue;
+    // let store= props.store.getState()
+    // //
+    // // const profilePage = store.profilePage
+    // // const dialogs = store.dialogsPage.users
+    // // const newMessagesBody=store.dialogsPage.newMessagesBody
+    // // const messages = store.dialogsPage.messages
+    // const navbarPage = store.sideBar.names
+    // const navbarPageBoolean = store.sideBar.isTrue;
 
-    debugger;
+    //debugger;
+
 
     return (
 
         <div className='app-wrapper'>
             <Header/>
-            <Navbar names={navbarPage} isTrue={navbarPageBoolean}/>
+            <NavbarContainer store={props.store}/>
 
             <div className='app-wrapper-content'>
                 <Routes>

@@ -1,9 +1,23 @@
-import {ActionTypes, PostsPropsType, ProfilePageType} from "./state";
+import {ActionTypes} from "./redux-store";
+
+
+// Types
+export type ProfilePageType = {
+    posts: Array<PostsPropsType>,
+    newPost: string
+}
+export type PostsPropsType = {
+    id: number,
+    message: string,
+    like: number,
+    follow: number
+}
+//
+
 
 export const addPostActionCreator = () => {
     return {type: "ADD-POST"} as const
 }
-
 
 export const updatePostActionCreator = (newText: string) => {
     return {
@@ -13,32 +27,35 @@ export const updatePostActionCreator = (newText: string) => {
 }
 
 
-const initialStateOfProfileReducer = {
+const initialStateOfProfileReducer: ProfilePageType = {
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
         {id: 2, message: 'Its my first post ', like: 1, follow: 2},
     ],
-        newPost: 'It-kamasutra'
+    newPost: 'It-kamasutra'
 }
 
-export const profileReducer = (profilePage: ProfilePageType=initialStateOfProfileReducer, action: ActionTypes) => {
+
+export const profileReducer = (state: ProfilePageType = initialStateOfProfileReducer, action: ActionTypes): ProfilePageType => {
     switch (action.type) {
         case "ADD-POST":
             let newPost: PostsPropsType = {
                 id: new Date().getTime(),
-                message: profilePage.newPost,
+                message: state.newPost,
                 like: 0,
                 follow: 0
             };
-            profilePage.posts.push(newPost)
-            profilePage.newPost = '';
-            return profilePage
+            // let stateCopy = {...state};
+            // stateCopy.posts = [...state.posts]
+            // stateCopy.posts.push(newPost)
+            // stateCopy.newPost = '';
+            return {...state, posts: [...state.posts, newPost]}
 
         case "UPDATE-POST" :
-            profilePage.newPost = action.newText;
-            return profilePage
-        default:
-            return profilePage
+            return {...state, newPost: action.newText}
+
+        default :
+            return state
     }
 }
 

@@ -8,15 +8,21 @@ display: grid;
 padding: 10px;
 }
 
-.user.active {
-color: gold;
-}
+
 
 .user a {
-color: black;
+color: #fcfafa;
     text-decoration: none;
 }
 
+.user a:active {
+    color: #f1d6d6;
+}
+
+.user a:hover {
+    text-decoration: none;
+    color: #e2dada;
+}
 
 
 .messages {
@@ -27,7 +33,18 @@ color: black;
 
 }
 
+/*.item a {*/
+/*    color: #f5f1f1;*/
+/*    text-decoration: none;*/
+/*}*/
 
+/*.item a:active {*/
+/*    color: #fcfcfc;*/
+/*}*/
+
+/*.item a:hover {*/
+/*    color: #e2dada;*/
+/*}*/
 
 
 .img {

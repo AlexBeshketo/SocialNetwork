@@ -1,21 +1,22 @@
 import h from './Dialogs.module.css'
 import {Messages} from "./Messages/Messages";
 import {DialogsItem} from './DialogItem/DialogsItem'
-import {DialogsPropsType, MessagesPropsType,} from "../../state/state";
+
 import React, {ChangeEvent} from "react";
+import {AllDialogsPropsType} from "./DialogsContainer";
 
 
-type DialogsType = {
-    users: Array<DialogsPropsType>,
-    messages: Array<MessagesPropsType>,
-    newMessagesBody: string,
-    addPost: () => void,
-    onChangeCallback: (text: string) => void
+// type DialogsType = {
+//     users: Array<DialogsPropsType>,
+//     messages: Array<MessagesPropsType>,
+//     newMessagesBody: string,
+//     addPost: () => void,
+//     onChangeCallback: (text: string) => void
+//
+//
+// }
 
-
-}
-
-function Dialogs(props: DialogsType) {
+function Dialogs(props:AllDialogsPropsType) {
 
 
     let dialogsElements = props.users.map((d: { name: string; id: number; }) => <DialogsItem name={d.name} key={d.id}
@@ -41,11 +42,8 @@ function Dialogs(props: DialogsType) {
             <div className={h.messages}>
                 <div>{messagesElements}</div>
                 <div>
-                    <div><textarea onChange={onChange} value={props.newMessagesBody} placeholder={'Enter your message'}>ADD message</textarea>
-                    </div>
-                    <div>
-                        <button onClick={addPost}>Add message</button>
-                    </div>
+                    <div><textarea onChange={onChange} value={props.newMessagesBody} placeholder={'Enter your message'}>ADD message</textarea></div>
+                    <div><button onClick={addPost}>Add message</button></div>
                 </div>
 
             </div>

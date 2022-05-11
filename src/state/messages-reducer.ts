@@ -1,4 +1,19 @@
-import {ActionTypes, DialogsPageType} from "./state";
+import {ActionTypes} from "./redux-store";
+
+
+export type DialogsPageType = {
+    users: Array<DialogsPropsType>,
+    messages: Array<MessagesPropsType>,
+    newMessagesBody: string
+}
+export type DialogsPropsType = {
+    name: string,
+    id: number
+}
+export type MessagesPropsType = {
+    message: string,
+    id: number,
+}
 
 
 export const updateNewMessageActionCreator = (text: string) => {
@@ -16,34 +31,41 @@ export const AddNewMessageActionCreator = () => {
 
 
 let initialStateOfDialogsPage = {
-           users: [
-            {name: 'Sveta', id: 1},
-            {name: 'Kolya', id: 2},
-            {name: 'Masha', id: 3},
-            {name: 'Natasha', id: 4},
-        ],
-        messages: [
-            {message: 'Hi , how are you ?', id: 1},
-            {message: 'What is the weather today?', id: 2},
-            {message: 'Common, guy', id: 3},
-            {message: 'Are you nigger?', id: 4},
-        ],
-        newMessagesBody: ''
-    }
+    users: [
+        {name: 'Sveta', id: 1},
+        {name: 'Kolya', id: 2},
+        {name: 'Masha', id: 3},
+        {name: 'Natasha', id: 4},
+    ],
+    messages: [
+        {message: 'Hi , how are you ?', id: 1},
+        {message: 'What is the weather today?', id: 2},
+        {message: 'Common, guy', id: 3},
+        {message: 'Are you nigger?', id: 4},
+    ],
+    newMessagesBody: ''
+}
 
-export const messagesReducer = (dialogsPage: DialogsPageType = initialStateOfDialogsPage, action: ActionTypes) => {
+export const messagesReducer = (state: DialogsPageType = initialStateOfDialogsPage, action: ActionTypes): DialogsPageType => {
+
 
     switch (action.type) {
         case "UPDATE-NEW-MESSAGE":
-            dialogsPage.newMessagesBody = action.text
-            return dialogsPage
+
+            return {...state, newMessagesBody: action.text};
+
         case "ADD-NEW-MESSAGE":
-            let text = dialogsPage.newMessagesBody
-            dialogsPage.newMessagesBody = ''
-            dialogsPage.messages.push({id: 5, message: text})
-            return dialogsPage
+            let text = state.newMessagesBody;
+
+            return {
+                ...state,
+                newMessagesBody: '',
+                messages: [...state.messages, {id: 5, message: text}]
+            };
+
         default:
-            return dialogsPage
+            return state
+
     }
 };
 

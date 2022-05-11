@@ -1,15 +1,21 @@
 import n from "./Navbar.module.css"
 import {NavLink} from "react-router-dom";
 
-import {SideBarPageType} from "../../state/state";
 import React from "react";
+import {AllNavbarType} from "./NavbarContainer";
+
+// type NavbarType = {
+//
+//   names:Array<DialogsPropsType>
+//   isTrue: boolean,
+//
+// }
+
+function Navbar(props:AllNavbarType ) {
 
 
 
-function Navbar(props:SideBarPageType ) {
-
-    const checkActive = (isTrue?:boolean) =>  (!isTrue ? '' : n.active)
-
+    const checkActive = (isTrue?: boolean) => (!props.isTrue ? '' : n.active)
 
     const friends = props.names.map((post) => <div key={post.id} className={n.dot}>{post.name}</div>)
 

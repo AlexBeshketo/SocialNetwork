@@ -1,7 +1,8 @@
 import Post from "./Post/Post";
 import p from './Posts.module.css'
-import { PostsPropsType,} from "../../../state/state";
+
 import React, {ChangeEvent} from "react";
+import {AllPostsPropsType} from "./PostsContainer";
 
 
 // let postsData = [
@@ -10,17 +11,17 @@ import React, {ChangeEvent} from "react";
 //
 // ]
 
-type PostsPostType = {
-    posts: PostsPropsType[]
-    newPost: string
-    // addPost: addPostPropsType,
-    // updatePost: updatePostPropsType
-    addPost: ()=> void
-    onChangeCallback: (text:string)=> void
-}
+// type PostsPostType = {
+//     posts: PostsPropsType[]
+//     newPost: string
+//     // addPost: addPostPropsType,
+//     // updatePost: updatePostPropsType
+//     addPost: ()=> void
+//     onChangeCallback: (text:string)=> void
+// }
 
 
-function Posts(props: PostsPostType) {
+function Posts(props: AllPostsPropsType) {
 
     let postsElement = props.posts
         .map((p => <Post key={p.id} id={p.id} message={p.message} like={p.like} follow={p.follow}/>))
@@ -39,7 +40,7 @@ function Posts(props: PostsPostType) {
                 <h2>My posts</h2>
             </div>
             <div>
-                <textarea value={props.newPost} onChange={onChange}>ghjghj</textarea>
+                <textarea value={props.newPost} onChange={onChange}>Hi</textarea>
             </div>
             <div>
                 <button onClick={addPost}>Add Post</button>

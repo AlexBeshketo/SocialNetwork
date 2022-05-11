@@ -11,12 +11,16 @@
 
 
 .item a {
-    color: #ffffff;
+    color: #f5f1f1;
     text-decoration: none;
 }
 
-.item a.active {
-    color: #0e0e0e;
+.item a:active {
+    color: #fcfcfc;
+}
+
+.item a:hover {
+    color: #e2dada;
 }
 
 .friends {
