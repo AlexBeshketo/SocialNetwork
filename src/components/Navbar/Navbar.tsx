@@ -26,6 +26,9 @@ function Navbar(props:AllNavbarType ) {
                 <NavLink className={checkActive()}  to='./profile'>Profile</NavLink>
             </div>
             <div className={n.item}>
+                <NavLink className={checkActive()}  to='/users'>Users </NavLink>
+            </div>
+            <div className={n.item}>
                 <NavLink className={checkActive()}  to='/dialogs'>Messages </NavLink>
             </div>
 

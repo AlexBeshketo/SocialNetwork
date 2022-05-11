@@ -3,6 +3,7 @@ import {profileReducer} from "./profile-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 import {messagesReducer} from "./messages-reducer";
 import {ADDNewMessageActionType, addPostActionType, updateNewMessageActionType, updatePostActionType} from "./state";
+import {usersReducer} from "./users-reducer";
 
 export type ActionTypes =
     addPostActionType
@@ -14,7 +15,8 @@ export type ActionTypes =
 export const rootReducer=combineReducers({
     profilePage: profileReducer,
     sideBar:sidebarReducer,
-    dialogsPage:messagesReducer
+    dialogsPage:messagesReducer,
+    usersPage: usersReducer
 
     })
 
