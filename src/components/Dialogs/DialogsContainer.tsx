@@ -1,7 +1,8 @@
 import {
-    AddNewMessageActionCreator, DialogsPropsType,
-    MessagesPropsType,
-    updateNewMessageActionCreator
+    addNewMessage,
+    DialogsPropsType,
+    MessagesPropsType, updateNewMessage,
+
 } from "../../state/messages-reducer";
 import React from "react";
 import Dialogs from "./Dialogs";
@@ -50,8 +51,8 @@ type MSTPType= {
 }
 
 type MDTPType= {
-    addPost: ()=> void
-    onChangeCallback: (text:string)=> void
+    addNewMessage: ()=> void
+    updateNewMessage: (text:string)=> void
 }
 
 export type AllDialogsPropsType = MSTPType & MDTPType
@@ -65,16 +66,12 @@ let mapStateToProps = (state:AppStateType):MSTPType => {
     }
 }
 
-let mapDispatchToProps = (dispatch:Dispatch):MDTPType => {
-    return {
-        addPost : ()=> {
-            dispatch(AddNewMessageActionCreator())
-        },
-        onChangeCallback: (text:string)=> {
-            dispatch(updateNewMessageActionCreator(text))
-        }
-    }
-}
+// let mapDispatchToProps = (dispatch:Dispatch):MDTPType => {
+//     return {
+//         addNewMessage ,
+//         updateNewMessage
+//     }
+// }
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps) (Dialogs);
+export const DialogsContainer = connect(mapStateToProps, {addNewMessage ,updateNewMessage}) (Dialogs);
 

@@ -1,4 +1,4 @@
-import {ActionTypes} from "./redux-store";
+
 
 export type DialogsPropsType = {
     name: string,
@@ -20,8 +20,9 @@ let initialStateOfSideBar = {
     isTrue: true
 }
 
+type sidebarReducerActionType = ReturnType<typeof sidebarReducer>
 
-export const sidebarReducer = (state: SideBarPageType = initialStateOfSideBar, action: ActionTypes) => {
+export const sidebarReducer = (state: SideBarPageType = initialStateOfSideBar, action: any) => {
 
     return state
 

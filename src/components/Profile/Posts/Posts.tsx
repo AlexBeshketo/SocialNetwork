@@ -31,7 +31,7 @@ function Posts(props: AllPostsPropsType) {
     }
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChangeCallback(e.currentTarget.value)
+        props.updatePost(e.currentTarget.value)
     }
 
     return (

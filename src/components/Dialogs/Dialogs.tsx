@@ -18,7 +18,6 @@ import {AllDialogsPropsType} from "./DialogsContainer";
 
 function Dialogs(props:AllDialogsPropsType) {
 
-
     let dialogsElements = props.users.map((d: { name: string; id: number; }) => <DialogsItem name={d.name} key={d.id}
                                                                                              id={d.id}/>)
 
@@ -26,11 +25,11 @@ function Dialogs(props:AllDialogsPropsType) {
         props.messages.map((m: { message: string; id: number }) => <Messages key={m.id} message={m.message}/>)
 
     const addPost = (e: React.MouseEvent<HTMLButtonElement>) => {
-        props.addPost()
+        props.addNewMessage()
     }
 
     const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChangeCallback(e.currentTarget.value)
+        props.updateNewMessage(e.currentTarget.value)
     }
 
     return (

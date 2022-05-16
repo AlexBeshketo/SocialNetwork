@@ -1,7 +1,6 @@
 import React from "react";
 import './App.css';
 import Header from "./components/Header/Header";
-import Profile from "./components/Profile/Profile";
 import {Route, Routes} from "react-router-dom";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -10,10 +9,16 @@ import News from "./components/News/News";
 
 import {NavbarContainer} from "./components/Navbar/NavbarContainer";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
-import {ActionTypes, AppStateType} from "./state/redux-store";
-import Users from "./Users/Users";
-import UsersContainer from "./Users/UsersContainer";
+import { AppStateType} from "./state/redux-store";
+import UsersAPIContainer from "./Users/UsersContainer";
+import {messagesReducerActionsType} from "./state/messages-reducer";
+import {profileReducerActionsType} from "./state/profile-reducer";
+import {UsersACTypes} from "./state/users-reducer";
+import ProfileContainer from "./components/Profile/ProfileContainer";
 
+
+
+type ActionTypes= profileReducerActionsType | messagesReducerActionsType | UsersACTypes
 
 
 
@@ -46,9 +51,9 @@ function App (props:AppPropsType) {
 
             <div className='app-wrapper-content'>
                 <Routes>
-                    <Route path={'/profile'} element={<Profile store={props.store}/>}/>
-                    <Route path={'/users'} element={<UsersContainer/>}/>
-                    <Route path={'/dialogs'} element={<DialogsContainer store={props.store}/>}/>
+                    <Route path={'/profile/:userId?'} element={<ProfileContainer />}/>
+                    <Route path={'/users'} element={<UsersAPIContainer />}/>
+                    <Route path={'/dialogs'} element={<DialogsContainer store={props.store} />}/>
 
                     <Route path={'/news'} element={<News/>}/>
                     <Route path={'/music'} element={<Music/>}/>

@@ -3,18 +3,20 @@ import React from "react";
 import k from './Profile.module.css'
 
 import PostsContainer from "./Posts/./PostsContainer";
-import {AppStateType} from "../../state/redux-store";
+import {ProfileContainerPropsType} from "./ProfileContainer";
+import {ProfileType} from "../../state/profile-reducer";
+
 
 
 type ProfilePostType = {
-    store: AppStateType
+    profile: ProfileType
 }
 
-function Profile(props: ProfilePostType) {
+function Profile(props:ProfilePostType) {
     return (
         < div className={k.content}>
-            <ProfileInfo/>
-            <PostsContainer store={props.store}/>
+            <ProfileInfo {...props.profile}/>
+            <PostsContainer/>
         </div>
     )
 }

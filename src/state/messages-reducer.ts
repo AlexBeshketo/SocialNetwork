@@ -1,4 +1,4 @@
-import {ActionTypes} from "./redux-store";
+
 
 
 export type DialogsPageType = {
@@ -16,18 +16,6 @@ export type MessagesPropsType = {
 }
 
 
-export const updateNewMessageActionCreator = (text: string) => {
-    return {
-        type: 'UPDATE-NEW-MESSAGE',
-        text: text
-    } as const
-}
-
-export const AddNewMessageActionCreator = () => {
-    return {
-        type: 'ADD-NEW-MESSAGE',
-    } as const
-}
 
 
 let initialStateOfDialogsPage = {
@@ -46,7 +34,7 @@ let initialStateOfDialogsPage = {
     newMessagesBody: ''
 }
 
-export const messagesReducer = (state: DialogsPageType = initialStateOfDialogsPage, action: ActionTypes): DialogsPageType => {
+export const messagesReducer = (state: DialogsPageType = initialStateOfDialogsPage, action: messagesReducerActionsType): DialogsPageType => {
 
 
     switch (action.type) {
@@ -68,4 +56,22 @@ export const messagesReducer = (state: DialogsPageType = initialStateOfDialogsPa
 
     }
 };
+
+export type messagesReducerActionsType= updateNewMessageACType | addNewMessageACType
+type updateNewMessageACType= ReturnType<typeof updateNewMessage>
+type addNewMessageACType= ReturnType<typeof addNewMessage>
+
+export const updateNewMessage = (text: string) => {
+    return {
+        type: 'UPDATE-NEW-MESSAGE',
+        text: text
+    } as const
+}
+
+export const addNewMessage = () => {
+    return {
+        type: 'ADD-NEW-MESSAGE',
+    } as const
+}
+
 

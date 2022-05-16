@@ -1,8 +1,17 @@
 import p from './Post.module.css'
-import {PostsPropsType} from "../../../../state/state";
 import React from "react";
 
-let Post = ({message, like, follow}:PostsPropsType) => {
+
+
+
+type PostType= {
+    message: string,
+    like: number,
+    follow : number,
+    id:number
+}
+
+let Post = ({message, like, follow}:PostType) => {
 
     return (
         <>
