@@ -1,8 +1,10 @@
 import React from 'react';
 
 import styles from "./users.module.css"
-import {usersType} from "../state/users-reducer";
+import {usersType} from "../../state/users-reducer";
 import {NavLink} from "react-router-dom";
+import {Button} from "@mui/material";
+import { folowwed_unfollowedAPI} from "../../api/api";
 
 
 type UsersType = {
@@ -19,6 +21,12 @@ type UsersType = {
     setTotalUsersCount: (totalCount: number) => void
     onPageChanged: (currentPage: number) => void
 }
+export type PostDeleteAxiosType = {
+    resultCode: number
+    messages: string[]
+    data: {}
+}
+
 
 export const Users = (props: UsersType) => {
 
@@ -29,10 +37,10 @@ export const Users = (props: UsersType) => {
         pages.push(i)
     }
 
+
     return (
 
         <div>
-
 
             <div className={styles.wrapper}>
                 <div>
@@ -54,13 +62,24 @@ export const Users = (props: UsersType) => {
                             <div className={styles.container_buttons}>
 
                                 {k.followed
-                                    ? <button className={styles.button} onClick={() => {
-                                        props.unfollow(k.id)
-                                    }}>Follow</button>
-                                    : <button className={styles.button} onClick={() => {
-                                        props.follow(k.id)
-                                    }}>Unfollow</button>}
+                                    ? <Button className={styles.button} onClick={() => {
 
+                                        folowwed_unfollowedAPI.unfollowUsers(k.id)
+                                            .then(data => {
+                                                if (data.resultCode === 0) {
+                                                    props.unfollow(k.id)
+                                                }
+                                            })
+                                    }}>Unfollow</Button>
+
+                                    : <Button className={styles.button} onClick={() => {
+
+                                        folowwed_unfollowedAPI.followUsers(k.id).then(data => {
+                                            if (data.resultCode === 0) {
+                                                props.follow(k.id)
+                                            }
+                                        })
+                                    }}>Follow</Button>}
 
                             </div>
                         </div>

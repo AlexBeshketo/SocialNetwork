@@ -4,6 +4,7 @@ import {sidebarReducer} from "./sidebar-reducer";
 import {messagesReducer} from "./messages-reducer";
 
 import {usersReducer} from "./users-reducer";
+import {authReducer} from "./auth-reducer";
 
 
 
@@ -12,7 +13,8 @@ export const rootReducer=combineReducers({
     profilePage: profileReducer,
     sideBar:sidebarReducer,
     dialogsPage:messagesReducer,
-    usersPage: usersReducer
+    usersPage: usersReducer,
+    auth: authReducer
 
     })
 

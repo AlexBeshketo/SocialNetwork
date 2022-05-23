@@ -3,6 +3,10 @@ import p from './Posts.module.css'
 
 import React, {ChangeEvent} from "react";
 import {AllPostsPropsType} from "./PostsContainer";
+import {Button, TextField} from "@mui/material";
+
+
+
 
 
 // let postsData = [
@@ -39,11 +43,23 @@ function Posts(props: AllPostsPropsType) {
             <div>
                 <h2>My posts</h2>
             </div>
+
+
             <div>
-                <textarea value={props.newPost} onChange={onChange}>Hi</textarea>
+                <TextField
+                    id="outlined-multiline-static"
+                    label="Enter your message"
+                    multiline
+                    color={'info'}
+                    style={{width: '600px'}}
+                    rows={6}
+                    defaultValue="Default Value"
+                    value={props.newPost} onChange={onChange}/>
+
             </div>
-            <div>
-                <button onClick={addPost}>Add Post</button>
+            <div className={p.btn_container}>
+                <Button className={p.btn}  variant='outlined'  onClick={addPost}>Add Post </Button>
+
             </div>
             <div className={p.posts}>
                 {postsElement}

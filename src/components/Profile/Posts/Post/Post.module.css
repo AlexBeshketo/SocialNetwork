@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
 
 .item {
     color: #fcfcfc;
@@ -6,4 +7,36 @@
     width: 80px;
     height: 80px;
     border-radius: 5px;
+}
+
+
+
+/**/
+
+
+
+#chat {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    grid-area: chat-form;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px 2px 2px  2px;
+    border: 1px solid #c7c7c7;
+    width:300px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+color: black;
+    padding-left: 50px;
+    padding-right: 22px;
+
+}
+
+.one {
+    flex: 1;
+    padding-left: 0px;
+}
+
+.two {
+    flex:2
 }

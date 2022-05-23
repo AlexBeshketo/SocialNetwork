@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {
     follow,
     setCurrentPage,
@@ -8,16 +7,16 @@ import {
     setUser,
     unfollow,
     usersType
-} from "../state/users-reducer";
-import {AppStateType} from "../state/redux-store";
-import {Dispatch} from "redux";
+} from "../../state/users-reducer";
+import {AppStateType} from "../../state/redux-store";
 
 import {connect} from "react-redux";
 import {Users} from "./Users";
-import WaitingLogo from "../components/WaitingLogo/WaitingLogo";
+import WaitingLogo from "../WaitingLogo/WaitingLogo";
+import {usersAPI} from "../../api/api";
 
 
-type ResponseUsersType = {
+export type ResponseUsersType = {
     error: string | null,
     items: usersType[]
     totalCount: number
@@ -47,22 +46,25 @@ class UsersAPIContainer extends React.Component<UsersAPIContainerType> {
 
     componentDidMount() {
         this.props.setToogleIsFetching(true)
-        axios.get<ResponseUsersType>(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-            .then(response => {
-                this.props.setToogleIsFetching(false)
-                this.props.setUser(response.data.items)
-                this.props.setTotalUsersCount(response.data.totalCount)
-            })
+
+
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+            this.props.setToogleIsFetching(false)
+            this.props.setUser(data.items)
+            this.props.setTotalUsersCount(data.totalCount)
+        })
     }
 
     onPageChanged = (currentPage: number) => {
         this.props.setCurrentPage(currentPage)
         this.props.setToogleIsFetching(true)
-        axios.get<ResponseUsersType>(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${this.props.pageSize}`).then(response => {
-            this.props.setToogleIsFetching(false)
-            this.props.setUser(response.data.items)
-            // this.props.setTotalUsersCount(response.data.totalCount)
-        })
+
+        usersAPI.getUsers(currentPage, this.props.pageSize)
+            .then(data => {
+                this.props.setToogleIsFetching(false)
+                this.props.setUser(data.items)
+                // this.props.setTotalUsersCount(response.data.totalCount)
+            })
     }
 
     render() {

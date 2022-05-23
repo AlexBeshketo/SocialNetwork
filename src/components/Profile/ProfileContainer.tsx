@@ -1,48 +1,44 @@
-import React, {JSXElementConstructor} from "react";
+import React from "react";
 import Profile from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
 import {AppStateType} from "../../state/redux-store";
 import {ProfileType, setUserProfile} from "../../state/profile-reducer";
 import WaitingLogo from "../WaitingLogo/WaitingLogo";
-import { useLocation, useNavigate, useParams} from "react-router-dom"
-import {compose} from "redux";
-
-
-
+import {profileAPI} from "../../api/api";
 
 
 export type ProfileContainerPropsType = mapStateToPropsType & mapDispatchToStateType
+type OwnProps = {
+    profile: ProfileType
+    match?: any
+    setUserProfile: (profile: ProfileType) => void
+
+}
+
 type mapStateToPropsType = {
     profile: ProfileType
+    match: any
 }
 type mapDispatchToStateType = {
     setUserProfile: (profile: ProfileType) => void
 }
 
-// type ParamsUserIDType = {
-//     userId: string,
-// }
 
-// type PropsWithParamsPropsType= RouteComponentProps<ParamsUserIDType> & ProfileContainerPropsType
-
-class ProfileContainer extends React.Component<ProfileContainerPropsType> {
+class ProfileContainer extends React.Component<OwnProps> {
 
     componentDidMount() {
-        debugger;
+
         //@ts-ignore
+        let userId = this.props.match && Number(this.props.match?.userId)
+        //let userId:string = this.props.router.params.userId;
+        if (!userId) {
+            userId = 23828
+        }
 
-        let userId:string = this.props.router.params.userId;
-              // let userId:string=this.props.match.params.userId
-
-        //variant interneta
-        // let userID:string = this.props.router.params.userId;
-
-        // const params= useParams()
-
-        axios.get<ProfileType>('https://social-network.samuraijs.com/api/1.0/profile/2' + userId)
-            .then(response => {
-                this.props.setUserProfile(response.data)
+        profileAPI.getUserProfile(userId)
+            .then(data => {
+                this.props.setUserProfile(data)
             })
     }
 
@@ -51,48 +47,30 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
             <div>
                 {
                     this.props.profile ?
-                        <Profile profile={this.props.profile}/>
-                        :
-                        <WaitingLogo/>
+                    <Profile profile={this.props.profile}/>
+                    :
+                    <WaitingLogo/>
                 }
             </div>
         );
     }
 }
 
-//variant interneta
-
- const withRouter = (Component: JSXElementConstructor<any>): JSXElementConstructor<any> => {
-    function ComponentWithRouterProp(props: any) {
-        let location = useLocation();
-        let navigate = useNavigate();
-        let params = useParams();
-        return (
-            <Component
-                {...props}
-                router={{location, navigate, params}}
-            />
-        );
-    }
-
-    return ComponentWithRouterProp;
+type ToOwnType = {
+    match?: any
 }
 
-
-//moe
-export let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
+export let mapStateToProps = (state: AppStateType, ownProps: ToOwnType) => {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        match: ownProps.match,
     }
 }
 
-//variant interneta
-export default compose<React.ComponentType>(connect(mapStateToProps, {setUserProfile,
-}),withRouter)(ProfileContainer)
 
-
-
-
+export default connect<mapStateToPropsType, mapDispatchToStateType, {}, AppStateType>(mapStateToProps, {
+    setUserProfile,
+})(ProfileContainer)
 
 
 // const WithUrlDataProfileContainer = withRouter(ProfileContainer)

@@ -5,6 +5,7 @@ import k from './Profile.module.css'
 import PostsContainer from "./Posts/./PostsContainer";
 import {ProfileContainerPropsType} from "./ProfileContainer";
 import {ProfileType} from "../../state/profile-reducer";
+import ProfileInfo2 from "./AvaInfo/ProfileInfo2";
 
 
 

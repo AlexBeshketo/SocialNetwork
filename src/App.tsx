@@ -9,12 +9,14 @@ import News from "./components/News/News";
 
 import {NavbarContainer} from "./components/Navbar/NavbarContainer";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
-import { AppStateType} from "./state/redux-store";
-import UsersAPIContainer from "./Users/UsersContainer";
+import {AppStateType} from "./state/redux-store";
+import UsersAPIContainer from "./components/Users/UsersContainer";
 import {messagesReducerActionsType} from "./state/messages-reducer";
 import {profileReducerActionsType} from "./state/profile-reducer";
 import {UsersACTypes} from "./state/users-reducer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
+import {ProfileWithParam} from "./components/Profile/ProfileWithParam";
+import HeaderContainer from "./components/Header/HeaderContainer";
 
 
 
@@ -40,18 +42,18 @@ function App (props:AppPropsType) {
     // const navbarPage = store.sideBar.names
     // const navbarPageBoolean = store.sideBar.isTrue;
 
-    //debugger;
 
 
     return (
 
         <div className='app-wrapper'>
-            <Header/>
+            <HeaderContainer/>
             <NavbarContainer store={props.store}/>
 
             <div className='app-wrapper-content'>
                 <Routes>
-                    <Route path={'/profile/:userId?'} element={<ProfileContainer />}/>
+                    <Route path={'/profile'} element={<ProfileContainer />}/>
+                    <Route path={'/profile/:userId'} element={<ProfileWithParam />}/>
                     <Route path={'/users'} element={<UsersAPIContainer />}/>
                     <Route path={'/dialogs'} element={<DialogsContainer store={props.store} />}/>
 
