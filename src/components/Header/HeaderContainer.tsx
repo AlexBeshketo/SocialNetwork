@@ -1,10 +1,10 @@
 import React from "react";
 import Header from "./Header";
-import axios from "axios";
 import {AppStateType} from "../../state/redux-store";
 import {connect} from "react-redux";
-import {dataStateofLoginType, setToogleIsFetching, setUserData} from "../../state/auth-reducer";
+import {dataStateofLoginType, loginThunkCreator, setToogleIsFetching, setUserData} from "../../state/auth-reducer";
 import WaitingLogo from "../WaitingLogo/WaitingLogo";
+import {loginAPI} from "../../api/api";
 
 type mapStateToPropsType = {
     data: dataStateofLoginType
@@ -13,7 +13,8 @@ type mapStateToPropsType = {
 }
 type mapDispatchToPropsType = {
     setUserData: (data: dataStateofLoginType) => void,
-    setToogleIsFetching: (isFetching: boolean) => void
+    setToogleIsFetching: (isFetching: boolean) => void,
+    loginThunkCreator: ()=> void
 }
 
 export type HeaderContainerPropsType = mapStateToPropsType & mapDispatchToPropsType  //типизация классовой компоненты//
@@ -28,18 +29,7 @@ export type AxiosType<T> = {
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
 
     componentDidMount() {
-        this.props.setToogleIsFetching(true)
-        axios.get<AxiosType<dataStateofLoginType>>
-        (`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-            withCredentials: true
-        })
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    this.props.setUserData(response.data.data)
-                }
-                this.props.setToogleIsFetching(false)
-
-            })
+      this.props.loginThunkCreator() //thunk get zapros avtorizaciji
     }
 
 
@@ -63,5 +53,5 @@ export let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 
 
 export default connect(mapStateToProps, {
-    setUserData, setToogleIsFetching
+    setUserData, setToogleIsFetching, loginThunkCreator
 })(HeaderContainer)

@@ -1,4 +1,5 @@
-
+import {folowwed_unfollowedAPI, usersAPI} from "../api/api";
+import {Dispatch} from "redux";
 
 export type DialogsPageType = {
     users: Array<DialogsPropsType>,
@@ -14,15 +15,15 @@ export type MessagesPropsType = {
     id: number,
 }
 
-export type usersType =  {name: string , id: number, uniqueUrlName: null | string,  photos: { small : null | string , large:null | string},  status: null | string, followed: boolean }
+export type usersType = { name: string, id: number, uniqueUrlName: null | string, photos: { small: null | string, large: null | string }, status: null | string, followed: boolean }
 
 export type initialStateOfDialogsPageType = {
     users: Array<usersType>
     pageSize: number,
-    totalUsersCount : number,
+    totalUsersCount: number,
     currentPage: number,
-    isFetching: boolean
-
+    isFetching: boolean,
+    followingInProgress: any
 
 
 }
@@ -63,9 +64,10 @@ export type initialStateOfDialogsPageType = {
 let initialStateOfUsersPage: initialStateOfDialogsPageType = {
     users: [],
     pageSize: 15,
-    totalUsersCount : 0,
-    currentPage: 2,
-    isFetching: true
+    totalUsersCount: 0,
+    currentPage: 1,
+    isFetching: true,
+    followingInProgress: []
 }
 
 
@@ -81,6 +83,7 @@ export const usersReducer = (state = initialStateOfUsersPage, action: UsersACTyp
             return {...state, users: action.users}
         }
         case "SET-CURRENT-PAGE" : {
+            console.log({state,action})
             return {...state, currentPage: action.currentPage}
         }
         case "SET-TOTAL-USERS-COUNT" : {
@@ -89,28 +92,45 @@ export const usersReducer = (state = initialStateOfUsersPage, action: UsersACTyp
         case "TOOGLE-IS-FETCHING" : {
             return {...state, isFetching: action.isFetching}
         }
+        case "SET-FOLLOWING-IN-PROGRESS" : {
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userId]
+                    : state.followingInProgress.filter((id: number) => id !== action.userId)
+            }
+        }
+
         default:
             return state
 
     }
 }
 
-export type UsersACTypes = followACType | unfollowACType | addUsersACACType | setCurrentPageACType | setTotalUsersCountACType | ToogleIsFetchingACType
-type followACType = ReturnType<typeof follow>
-type unfollowACType = ReturnType<typeof unfollow>
+export type UsersACTypes =
+    followACType
+    | unfollowACType
+    | addUsersACACType
+    | setCurrentPageACType
+    | setTotalUsersCountACType
+    | ToogleIsFetchingACType
+    | setFollowingInProgressACType
+type followACType = ReturnType<typeof followSuccess>
+type unfollowACType = ReturnType<typeof unfollowSuccess>
 type addUsersACACType = ReturnType<typeof setUser>
 type setCurrentPageACType = ReturnType<typeof setCurrentPage>
-type setTotalUsersCountACType  = ReturnType<typeof setTotalUsersCount >
-type ToogleIsFetchingACType  = ReturnType<typeof setToogleIsFetching >
+type setTotalUsersCountACType = ReturnType<typeof setTotalUsersCount>
+type ToogleIsFetchingACType = ReturnType<typeof setToogleIsFetching>
+type setFollowingInProgressACType = ReturnType<typeof setFollowingInProgress>
 
-export const follow = (id: number) => {
+export const followSuccess = (id: number) => {
     return {
         type: 'FOLLOW',
         id: id
     } as const
 }
 
-export const unfollow = (id: number) => {
+export const unfollowSuccess = (id: number) => {
     return {
         type: 'UNFOLLOW',
         id: id
@@ -132,17 +152,85 @@ export const setCurrentPage = (currentPage: number) => {
 
     } as const
 }
-export const  setTotalUsersCount = (totalUsersCount: number) => {
+export const setTotalUsersCount = (totalUsersCount: number) => {
     return {
         type: 'SET-TOTAL-USERS-COUNT',
         totalUsersCount: totalUsersCount
 
     } as const
 }
-export const setToogleIsFetching= (isFetching:boolean) => {
+export const setToogleIsFetching = (isFetching: boolean) => {
     return {
         type: 'TOOGLE-IS-FETCHING',
         isFetching: isFetching
 
     } as const
+}
+
+export const setFollowingInProgress = (isFetching: boolean, userId: number) => {
+    return {
+        type: 'SET-FOLLOWING-IN-PROGRESS',
+        isFetching: isFetching,
+        userId
+
+    } as const
+}
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+    return (dispatch: Dispatch) => { //запрос получение юзеров-thunk
+        dispatch(setToogleIsFetching(true)) //true-когда пошел запрос но запроса нет есть крутилка
+// axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,{withCredentials:true}) //в api находится
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(setToogleIsFetching(false))
+            dispatch(setUser(data.items))
+            dispatch(setTotalUsersCount(data.totalCount))
+        })
+    }
+}
+
+
+export const changePageThunkCreator = (currentPage: number, pageSize: number) => {
+
+    return (dispatch: Dispatch) => {
+        dispatch(setToogleIsFetching(true))
+
+
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
+
+            dispatch(setToogleIsFetching(false))
+            dispatch(setUser(data.items))
+            dispatch(setCurrentPage(currentPage))
+
+        })
+    }
+}
+
+
+export const followThunkCreator = (userId: number) => {
+    return (dispatch: Dispatch) => {
+
+        dispatch(setFollowingInProgress(true, userId))
+        folowwed_unfollowedAPI.followUsers(userId)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(followSuccess(userId))
+                }
+                dispatch(setFollowingInProgress(false, userId))
+            })
+    }
+}
+
+
+export const unfollowThunkCreator = (userId: number) => {
+    return (dispatch: Dispatch) => {
+
+        dispatch(setFollowingInProgress(true, userId))
+        folowwed_unfollowedAPI.unfollowUsers(userId)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(unfollowSuccess(userId))
+                }
+                dispatch(setFollowingInProgress(false, userId))
+            })
+    }
 }

@@ -1,11 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
-    follow,
-    setCurrentPage,
-    setToogleIsFetching,
-    setTotalUsersCount,
-    setUser,
-    unfollow,
+    changePageThunkCreator,
+    followThunkCreator,
+    getUsersThunkCreator,
+    unfollowThunkCreator,
     usersType
 } from "../../state/users-reducer";
 import {AppStateType} from "../../state/redux-store";
@@ -13,7 +11,7 @@ import {AppStateType} from "../../state/redux-store";
 import {connect} from "react-redux";
 import {Users} from "./Users";
 import WaitingLogo from "../WaitingLogo/WaitingLogo";
-import {usersAPI} from "../../api/api";
+import {useNavigate} from "react-router";
 
 
 export type ResponseUsersType = {
@@ -27,45 +25,43 @@ type mapStateToPropsType = {
     pageSize: number,
     totalUsersCount: number,
     currentPage: number,
-    isFetching: boolean
+    isFetching: boolean,
+    followingInProgress: [],
+    isAuth: boolean
 }
 
 type mapDispatchToPropsType = {
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
+
+    unfollowThunkCreator: (userId: number) => void
+    followThunkCreator: (userId: number) => void
+
+
+    followSuccess: (userId: number) => void
+    unfollowSucess: (userId: number) => void
     setUser: (users: Array<usersType>) => void
     setCurrentPage: (currentPage: number) => void
     setTotalUsersCount: (totalCount: number) => void
-    setToogleIsFetching: (isFetching: boolean) => void
 
+    setFollowingInProgress: (isFetching: boolean, userId: number) => void
+    getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+    changePageThunkCreator: (CurrentPage: number, pageSize: number) => void
 }
 
 export type UsersAPIContainerType = mapStateToPropsType & mapDispatchToPropsType
 
 class UsersAPIContainer extends React.Component<UsersAPIContainerType> {
 
+
     componentDidMount() {
-        this.props.setToogleIsFetching(true)
 
-
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            this.props.setToogleIsFetching(false)
-            this.props.setUser(data.items)
-            this.props.setTotalUsersCount(data.totalCount)
-        })
+        this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
     }
 
-    onPageChanged = (currentPage: number) => {
-        this.props.setCurrentPage(currentPage)
-        this.props.setToogleIsFetching(true)
-
-        usersAPI.getUsers(currentPage, this.props.pageSize)
-            .then(data => {
-                this.props.setToogleIsFetching(false)
-                this.props.setUser(data.items)
-                // this.props.setTotalUsersCount(response.data.totalCount)
-            })
+    changeActualPage = (CurrentPage: number) => {
+        this.props.changePageThunkCreator(CurrentPage, this.props.pageSize)
     }
+
+
 
     render() {
 
@@ -73,15 +69,18 @@ class UsersAPIContainer extends React.Component<UsersAPIContainerType> {
             <>
                 {this.props.isFetching ? <WaitingLogo/> : null}
                 <Users users={this.props.users}
-                       setUser={this.props.setUser}
-                       follow={this.props.follow}
-                       unfollow={this.props.unfollow}
+                    // setUser={this.props.setUser}
+                       follow={this.props.followThunkCreator}
+                       unfollow={this.props.unfollowThunkCreator}
                        totalUsersCount={this.props.totalUsersCount}
                        pageSize={this.props.pageSize}
-                       onPageChanged={this.onPageChanged}
+                       onPageChanged={this.changeActualPage}
                        currentPage={this.props.currentPage}
-                       setCurrentPage={this.props.setCurrentPage}
-                       setTotalUsersCount={this.props.setTotalUsersCount}
+                    // setCurrentPage={this.props.setCurrentPage}
+                    // setTotalUsersCount={this.props.setTotalUsersCount}
+                    // setFollowingInProgress={this.props.setFollowingInProgress}
+                       followingInProgress={this.props.followingInProgress}
+                       isAuth={this.props.isAuth}
                 />
                 {/*<WaitingLogo/>*/}
             </>
@@ -96,7 +95,9 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress,
+        isAuth: state.auth.isAuth
 
     }
 }
@@ -115,12 +116,10 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 
 
 export default connect(mapStateToProps, {
-    follow,
-    unfollow,
-    setUser,
-    setCurrentPage,
-    setTotalUsersCount,
-    setToogleIsFetching
+    followThunkCreator,
+    unfollowThunkCreator,
+    changePageThunkCreator,
+    getUsersThunkCreator
 })(UsersAPIContainer);
 
 

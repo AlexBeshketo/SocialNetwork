@@ -19,8 +19,8 @@ function Header({data, isAuth}: HeaderPagePropsType) {
         <img alt={'ava'}
              src={'https://forbes.ua/static/storage/thumbs/1200x630/e/21/e1a4730a-804e15fc5c92a055e2ab8e71133a921e.png?v=4645_1'}/>
         </span>
-            <span style={{float: "right",}}>
-                {isAuth? login
+            <span className={h.login_absolute}>
+                {isAuth?   <span className={h.login}>{login}</span>
             : <NavLink to={"/login"}>Login</NavLink>
                 }
         </span>

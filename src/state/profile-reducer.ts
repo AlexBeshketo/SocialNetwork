@@ -1,9 +1,13 @@
 
 // Types
+import {Dispatch} from "redux";
+import {profileAPI} from "../api/api";
+
 export type ProfilePageType = {
     posts: Array<PostsPropsType>,
     newPost: string,
-    profile: ProfileType
+    profile: ProfileType,
+    isFetching:boolean
 
 }
 export type  ProfileType= {
@@ -38,12 +42,15 @@ export type PostsPropsType = {
 
 
 
+
+
 const initialStateOfProfileReducer: ProfilePageType = {
+    isFetching: true,
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
         {id: 2, message: 'Its my first post ', like: 1, follow: 2},
     ],
-    newPost: 'It-kamasutra',
+    newPost: '',
     profile: {
         "aboutMe": 'dfg',
         "contacts": {
@@ -87,16 +94,19 @@ export const profileReducer = (state: ProfilePageType = initialStateOfProfileRed
             return {...state, newPost: action.newText}
         case "SET-USER-PROFILE" :
             return {...state, profile: action.profile}
+        case "TOOGLE-IS-FETCHING" :
+            return {...state, isFetching: action.isFetching}
 
         default :
             return state
     }
 }
 
-export type profileReducerActionsType= addPostActionCreatorType | updatePostActionCreatorType | setUserProfileCreatorType
+export type profileReducerActionsType= addPostActionCreatorType | updatePostActionCreatorType | setUserProfileCreatorType | setToogleIsFetchingCreatorType
 type addPostActionCreatorType= ReturnType<typeof  addPost>
 type updatePostActionCreatorType= ReturnType<typeof  updatePost>
 type setUserProfileCreatorType= ReturnType<typeof  setUserProfile>
+type setToogleIsFetchingCreatorType= ReturnType<typeof  setToogleIsFetching>
 
 export const addPost = () => {
     return {type: "ADD-POST"} as const
@@ -115,3 +125,22 @@ export const setUserProfile = (profile:any) => {
         profile: profile
     } as const;
 }
+
+export const setToogleIsFetching = (isFetching: boolean) => {
+    return {
+        type: 'TOOGLE-IS-FETCHING',
+        isFetching: isFetching
+
+    } as const
+}
+
+
+
+export const getUserProfileThunkCreator= (userId:number) => (dispatch:Dispatch)=> {
+    dispatch(setToogleIsFetching(true))
+        profileAPI.getUserProfile(userId)
+            .then(data => {
+                dispatch(setUserProfile(data))
+                dispatch(setToogleIsFetching(false))
+            })
+    }

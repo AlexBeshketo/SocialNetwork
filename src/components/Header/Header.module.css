@@ -1,5 +1,5 @@
 .header {
-
+    position:relative;
     grid-area: header;
     background-color: #eef2f3;
     border-bottom: rgba(9, 9, 9, 0.06) 1px solid;
@@ -9,4 +9,15 @@
     width: 110px;
     height: auto;
     background-size: contain;
+}
+
+.login_absolute {
+
+}
+
+.login{
+    position:absolute;
+    top: 20px;
+    right: 20px;
+
 }

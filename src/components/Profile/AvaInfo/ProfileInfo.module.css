@@ -65,3 +65,7 @@ h4,h5 {
 /*.item a:hover {*/
 /*    color: #e2dada;*/
 /*}*/
+
+.block {
+    text-align: center;
+}

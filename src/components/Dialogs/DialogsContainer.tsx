@@ -47,7 +47,8 @@ import {Dispatch} from "redux";
 type MSTPType= {
     users: Array<DialogsPropsType>
     messages: Array<MessagesPropsType>,
-    newMessagesBody: string
+    newMessagesBody: string,
+    isAuth: boolean
 }
 
 type MDTPType= {
@@ -61,7 +62,8 @@ let mapStateToProps = (state:AppStateType):MSTPType => {
     return {
         users: state.dialogsPage.users,
         messages: state.dialogsPage.messages,
-        newMessagesBody: state.dialogsPage.newMessagesBody
+        newMessagesBody: state.dialogsPage.newMessagesBody,
+        isAuth:state.auth.isAuth
 
     }
 }

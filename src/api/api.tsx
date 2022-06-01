@@ -3,6 +3,8 @@ import axios from "axios";
 import {ResponseUsersType} from "../components/Users/UsersContainer";
 import {PostDeleteAxiosType} from "../components/Users/Users";
 import {ProfileType} from "../state/profile-reducer";
+import {dataStateofLoginType} from "../state/auth-reducer";
+import {AxiosType} from "../components/Header/HeaderContainer";
 
 
 type GetUsersType = {
@@ -60,12 +62,26 @@ export const folowwed_unfollowedAPI = {
 
 export const profileAPI = {
 
-    getUserProfile(userId: number) {
-        return  instance.get<ProfileType>('profile/' + userId)
+    getUserProfile(userId:number ) {
+        return instance.get<ProfileType>('profile/' + userId)
             .then(response => {
                 return response.data
             })
     },
 
 }
+
+export const loginAPI = {
+
+    getLogin() {
+        return (
+            instance.get<AxiosType<dataStateofLoginType>>('auth/me')
+                .then(response => {
+                    return response.data
+                })
+        )
+    }
+}
+
+
 

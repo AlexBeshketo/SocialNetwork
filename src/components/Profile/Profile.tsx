@@ -9,14 +9,15 @@ import ProfileInfo2 from "./AvaInfo/ProfileInfo2";
 
 
 
-type ProfilePostType = {
+export type ProfilePostType = {
     profile: ProfileType
+    isFetching:boolean
 }
 
 function Profile(props:ProfilePostType) {
     return (
         < div className={k.content}>
-            <ProfileInfo {...props.profile}/>
+            <ProfileInfo {...props}/>
             <PostsContainer/>
         </div>
     )

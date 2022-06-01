@@ -1,3 +1,6 @@
+import {loginAPI} from "../api/api";
+import {Dispatch} from "redux";
+
 export type dataStateofLoginType = {
     id: number,
     email: string,
@@ -59,4 +62,22 @@ export const setToogleIsFetching= (isFetching:boolean) => {
     } as const
 }
 
+
+
+
+
+export const loginThunkCreator = ()=>{
+return (dispatch:Dispatch) => {
+
+    dispatch(setToogleIsFetching(true))
+
+    loginAPI.getLogin()
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setUserData(data.data))
+            }
+            dispatch (setToogleIsFetching(false))
+        })
+    }
+}
 

@@ -17,6 +17,8 @@ import {UsersACTypes} from "./state/users-reducer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import {ProfileWithParam} from "./components/Profile/ProfileWithParam";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import Login from "./components/Login/Login";
+
 
 
 
@@ -51,6 +53,7 @@ function App (props:AppPropsType) {
             <NavbarContainer store={props.store}/>
 
             <div className='app-wrapper-content'>
+
                 <Routes>
                     <Route path={'/profile'} element={<ProfileContainer />}/>
                     <Route path={'/profile/:userId'} element={<ProfileWithParam />}/>
@@ -60,8 +63,10 @@ function App (props:AppPropsType) {
                     <Route path={'/news'} element={<News/>}/>
                     <Route path={'/music'} element={<Music/>}/>
                     <Route path={'/settings'} element={<Settings/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
 
                 </Routes>
+
                 {/*<Profile/>*/}
                 {/*<Dialogs/>*/}
             </div>
