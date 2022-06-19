@@ -10,32 +10,28 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import {Avatar} from "@mui/material";
 import ProfileInfoSceleton from "./ProfileInfoSceleton";
 
+import {StatusClassComponent} from "./Status/StatusClassComponent";
+
 type ProfileInfoType = {
     profile: ProfileType
     isFetching: boolean
+    status: string
+    updateStatus: (status: string) => void
 }
 
-const ProfileInfo = ({profile, isFetching}: ProfileInfoType) => {
-
-    debugger;
+const ProfileInfo = ({profile, isFetching, status, updateStatus}: ProfileInfoType) => {
 
 
     const {photos, userId, contacts, fullName, aboutMe, lookingForAJob, lookingForAJobDescription} = profile;
 
 
     return (
-        <div className={p.main}>
-            <div className={p.photo_default}>
-                <img alt={'aba'}
-                     src='https://img.freepik.com/free-photo/social-media-heart-like-icons-production-line-conyeror-belt-3d-render_601748-35543.jpg?w=1380'/>
-            </div>
-
-            {/*//block */}
+        <div className={p.profileInfo}>
 
             {isFetching
 
                 ? <ProfileInfoSceleton/>
-                    : <div className={p.descriptionBlock}>
+                : <div className={p.descriptionBlock}>
                     <div className={p.container_left}>
                         <div>
                             <Avatar
@@ -47,10 +43,11 @@ const ProfileInfo = ({profile, isFetching}: ProfileInfoType) => {
 
                     </div>
                     <div className={p.container_right}>
+
                         <div>
                             <h4>{fullName}</h4>
-                            {/*<div>Id: {userId}</div>*/}
-                            <h5>About Me: {aboutMe}</h5>
+
+                            <StatusClassComponent status={status} updateStatus={updateStatus}/>
 
                         </div>
                         <div className={p.looking_job_container}>
@@ -87,10 +84,10 @@ const ProfileInfo = ({profile, isFetching}: ProfileInfoType) => {
                         </div>
                     </div>
                 </div>
-                    }
-
-
-                </div>
-                )
             }
-            export default ProfileInfo
+
+
+        </div>
+    )
+}
+export default ProfileInfo

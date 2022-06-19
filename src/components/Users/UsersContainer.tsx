@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {ComponentType} from "react";
 import {
     changePageThunkCreator,
     followThunkCreator,
@@ -11,7 +11,8 @@ import {AppStateType} from "../../state/redux-store";
 import {connect} from "react-redux";
 import {Users} from "./Users";
 import WaitingLogo from "../WaitingLogo/WaitingLogo";
-import {useNavigate} from "react-router";
+import WithAuthRedirect from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
 export type ResponseUsersType = {
@@ -27,7 +28,7 @@ type mapStateToPropsType = {
     currentPage: number,
     isFetching: boolean,
     followingInProgress: [],
-    isAuth: boolean
+
 }
 
 type mapDispatchToPropsType = {
@@ -52,15 +53,15 @@ export type UsersAPIContainerType = mapStateToPropsType & mapDispatchToPropsType
 class UsersAPIContainer extends React.Component<UsersAPIContainerType> {
 
 
+
     componentDidMount() {
-
+        debugger;
         this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
-    }
 
+    }
     changeActualPage = (CurrentPage: number) => {
         this.props.changePageThunkCreator(CurrentPage, this.props.pageSize)
     }
-
 
 
     render() {
@@ -80,7 +81,7 @@ class UsersAPIContainer extends React.Component<UsersAPIContainerType> {
                     // setTotalUsersCount={this.props.setTotalUsersCount}
                     // setFollowingInProgress={this.props.setFollowingInProgress}
                        followingInProgress={this.props.followingInProgress}
-                       isAuth={this.props.isAuth}
+
                 />
                 {/*<WaitingLogo/>*/}
             </>
@@ -97,7 +98,7 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
         followingInProgress: state.usersPage.followingInProgress,
-        isAuth: state.auth.isAuth
+
 
     }
 }
@@ -115,12 +116,12 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 // }
 
 
-export default connect(mapStateToProps, {
-    followThunkCreator,
-    unfollowThunkCreator,
-    changePageThunkCreator,
-    getUsersThunkCreator
-})(UsersAPIContainer);
+export default compose<ComponentType>(
+    connect(mapStateToProps, {
+        followThunkCreator, unfollowThunkCreator, changePageThunkCreator, getUsersThunkCreator }),
+        WithAuthRedirect)(UsersAPIContainer)
+
+
 
 
 

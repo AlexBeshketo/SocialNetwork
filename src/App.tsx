@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import Header from "./components/Header/Header";
+
 import {Route, Routes} from "react-router-dom";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -17,22 +17,19 @@ import {UsersACTypes} from "./state/users-reducer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import {ProfileWithParam} from "./components/Profile/ProfileWithParam";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
+import LoginComponent from "./components/Login/LoginComponent";
+import Footer from "./components/Footer/Footer";
 
 
-
-
-type ActionTypes= profileReducerActionsType | messagesReducerActionsType | UsersACTypes
-
-
+type ActionTypes = profileReducerActionsType | messagesReducerActionsType | UsersACTypes
 
 
 export type AppPropsType = {
     store: AppStateType,
-    dispatch: (action: ActionTypes  )=> void
-    }
+    dispatch: (action: ActionTypes) => void
+}
 
-function App (props:AppPropsType) {
+function App(props: AppPropsType) {
 
 
     // let store= props.store.getState()
@@ -45,33 +42,47 @@ function App (props:AppPropsType) {
     // const navbarPageBoolean = store.sideBar.isTrue;
 
 
-
     return (
 
-        <div className='app-wrapper'>
-            <HeaderContainer/>
-            <NavbarContainer store={props.store}/>
+        <div className='main-container-grid'>
+            <div className="Header">
+                <HeaderContainer/>
+            </div>
+            <div className="Navbar">
+                <NavbarContainer/>
+            </div>
 
-            <div className='app-wrapper-content'>
+            <div className='Content'>
 
                 <Routes>
-                    <Route path={'/profile'} element={<ProfileContainer />}/>
-                    <Route path={'/profile/:userId'} element={<ProfileWithParam />}/>
-                    <Route path={'/users'} element={<UsersAPIContainer />}/>
-                    <Route path={'/dialogs'} element={<DialogsContainer store={props.store} />}/>
+
+                        <Route path={'/profile'} element={<ProfileContainer/>}/>
+
+                    <Route path={'/profile/:userId'} element={<ProfileWithParam/>}/>
+                    <Route path={'/users'} element={<UsersAPIContainer/>}/>
+                    <Route path={'/dialogs'} element={<DialogsContainer/>}/>
 
                     <Route path={'/news'} element={<News/>}/>
                     <Route path={'/music'} element={<Music/>}/>
                     <Route path={'/settings'} element={<Settings/>}/>
-                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/login'} element={<LoginComponent/>}/>
 
                 </Routes>
-
-                {/*<Profile/>*/}
-                {/*<Dialogs/>*/}
+            </div>
+            <div className="Footer">
+                <Footer/>
             </div>
         </div>
+
     )
 }
 
 export default App;
+
+
+// <div className="container">
+//     <div className="Header"></div>
+//     <div className="Navbar"></div>
+//     <div className="Footer"></div>
+//     <div className="Content"></div>
+// </div>

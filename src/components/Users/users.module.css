@@ -53,6 +53,9 @@
 
 }
 
+a {
+    text-decoration: none;
+}
 
 
 
@@ -69,6 +72,17 @@
 
 .button {
     padding: 6px;
+    background-color: black;
+}
+
+.button:hover {
+    padding: 6px;
+    background-color: black;
+}
+
+.button:active{
+    padding: 6px;
+    background-color: black;
 }
 
 .currentPage {

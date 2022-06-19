@@ -1,54 +1,55 @@
-
+import {v1} from "uuid";
+import {Config, names, uniqueNamesGenerator} from "unique-names-generator";
 
 
 export type DialogsPageType = {
-    users: Array<DialogsPropsType>,
+    // users: Array<DialogsPropsType>,
     messages: Array<MessagesPropsType>,
-    newMessagesBody: string
+
 }
 export type DialogsPropsType = {
     name: string,
     id: number
 }
 export type MessagesPropsType = {
+    user: string
     message: string,
-    id: number,
+    id: string,
 }
 
-
+const config: Config = { /// randomName
+    dictionaries: [names]
+}
+const characterName: string = uniqueNamesGenerator(config); // Winona
 
 
 let initialStateOfDialogsPage = {
-    users: [
-        {name: 'Sveta', id: 1},
-        {name: 'Kolya', id: 2},
-        {name: 'Masha', id: 3},
-        {name: 'Natasha', id: 4},
-    ],
+    // users: [
+    //     {name: 'Sveta', id: 1},
+    //     {name: 'Kolya', id: 2},
+    //     {name: 'Masha', id: 3},
+    //     {name: 'Natasha', id: 4},
+    // ],
     messages: [
-        {message: 'Hi , how are you ?', id: 1},
-        {message: 'What is the weather today?', id: 2},
-        {message: 'Common, guy', id: 3},
-        {message: 'Are you nigger?', id: 4},
+        {user: 'Sveta', message: 'Hi , how are you ?', id: v1()},
+        {user: 'Kolya', message: 'What is the weather today?', id: v1()},
+        {user: 'Masha', message: 'Common, guy', id: v1()},
+        {user: 'Natasha', message: 'Are you nigger?', id: v1()}
     ],
-    newMessagesBody: ''
+
 }
 
 export const messagesReducer = (state: DialogsPageType = initialStateOfDialogsPage, action: messagesReducerActionsType): DialogsPageType => {
 
 
     switch (action.type) {
-        case "UPDATE-NEW-MESSAGE":
-
-            return {...state, newMessagesBody: action.text};
 
         case "ADD-NEW-MESSAGE":
-            let text = state.newMessagesBody;
+            let text = action.newMessageBody;
 
             return {
                 ...state,
-                newMessagesBody: '',
-                messages: [...state.messages, {id: 5, message: text}]
+                messages: [...state.messages, {user: uniqueNamesGenerator(config), message: text ,  id: v1()}]
             };
 
         default:
@@ -57,20 +58,14 @@ export const messagesReducer = (state: DialogsPageType = initialStateOfDialogsPa
     }
 };
 
-export type messagesReducerActionsType= updateNewMessageACType | addNewMessageACType
-type updateNewMessageACType= ReturnType<typeof updateNewMessage>
-type addNewMessageACType= ReturnType<typeof addNewMessage>
+export type messagesReducerActionsType = addNewMessageACType
+type addNewMessageACType = ReturnType<typeof addNewMessage>
 
-export const updateNewMessage = (text: string) => {
-    return {
-        type: 'UPDATE-NEW-MESSAGE',
-        text: text
-    } as const
-}
 
-export const addNewMessage = () => {
+export const addNewMessage = (newMessageBody: string) => {
     return {
         type: 'ADD-NEW-MESSAGE',
+        newMessageBody,
     } as const
 }
 

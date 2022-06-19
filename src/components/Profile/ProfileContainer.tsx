@@ -1,37 +1,51 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
 import {AppStateType} from "../../state/redux-store";
-import {getUserProfileThunkCreator, ProfileType, setUserProfile} from "../../state/profile-reducer";
+import {
+    getStatusThunkCreator,
+    getUserProfileThunkCreator,
+    ProfileType,
+    updateStatusThunkCreator
+} from "../../state/profile-reducer";
 import WaitingLogo from "../WaitingLogo/WaitingLogo";
-import {profileAPI} from "../../api/api";
+import WithAuthRedirect from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
+import p from './Profile.module.css'
 
 
 export type ProfileContainerPropsType = mapStateToPropsType & mapDispatchToStateType
 type OwnProps = {
     profile: ProfileType
     match?: any
-
-    getUserProfileThunkCreator:(userId:number) => void
-    isFetching:boolean
+    status: string
+    getUserProfileThunkCreator: (userId: number) => void
+    getStatusThunkCreator: (userId: number) => void
+    updateStatusThunkCreator: (status: string) => void
+    isFetching: boolean
 
 }
 
 type mapStateToPropsType = {
     profile: ProfileType
     match: any
-    isFetching:boolean
+    isFetching: boolean
+    status: string
+
 }
 type mapDispatchToStateType = {
 
-    getUserProfileThunkCreator:(userId:number) => void
+    getUserProfileThunkCreator: (userId: number) => void
+    getStatusThunkCreator: (userId: number) => void
+    updateStatusThunkCreator: (status: string) => void
 }
 
 
 class ProfileContainer extends React.Component<OwnProps> {
 
+
     componentDidMount() {
+
 
         let userId = this.props.match && Number(this.props.match?.userId)
         console.log(userId)
@@ -41,19 +55,21 @@ class ProfileContainer extends React.Component<OwnProps> {
             userId = 23828
         }
         this.props.getUserProfileThunkCreator(userId)
+        this.props.getStatusThunkCreator(userId)
     }
 
 
     render() {
         return (
-            <div>
+            <>
                 {
                     this.props.profile ?
-                    <Profile profile={this.props.profile} isFetching={this.props.isFetching}/>
-                    :
-                    <WaitingLogo/>
+                        <Profile profile={this.props.profile} isFetching={this.props.isFetching}
+                                 status={this.props.status} updateStatus={this.props.updateStatusThunkCreator}/>
+                        :
+                        <WaitingLogo/>
                 }
-            </div>
+            </>
         );
     }
 }
@@ -66,14 +82,17 @@ export let mapStateToProps = (state: AppStateType, ownProps: ToOwnType) => {
     return {
         profile: state.profilePage.profile,
         match: ownProps.match,
-        isFetching: state.profilePage.isFetching
+        isFetching: state.profilePage.isFetching,
+        status: state.profilePage.status
+
     }
 }
 
-
-export default connect<mapStateToPropsType, mapDispatchToStateType, {}, AppStateType>(mapStateToProps, {
-    getUserProfileThunkCreator
-})(ProfileContainer)
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {
+        getUserProfileThunkCreator, getStatusThunkCreator, updateStatusThunkCreator
+    }),
+    WithAuthRedirect)(ProfileContainer)
 
 
 // const WithUrlDataProfileContainer = withRouter(ProfileContainer)

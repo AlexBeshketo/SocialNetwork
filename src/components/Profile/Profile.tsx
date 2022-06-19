@@ -1,22 +1,28 @@
 import ProfileInfo from "./AvaInfo/ProfileInfo";
-import React from "react";
-import k from './Profile.module.css'
+import React, {useEffect} from "react";
+import p from './Profile.module.css'
 
 import PostsContainer from "./Posts/./PostsContainer";
-import {ProfileContainerPropsType} from "./ProfileContainer";
+
 import {ProfileType} from "../../state/profile-reducer";
-import ProfileInfo2 from "./AvaInfo/ProfileInfo2";
+
 
 
 
 export type ProfilePostType = {
     profile: ProfileType
     isFetching:boolean
+    status: string
+    updateStatus: (status: string) => void
+
 }
 
 function Profile(props:ProfilePostType) {
+
+
+
     return (
-        < div className={k.content}>
+        <div className={p.main}>
             <ProfileInfo {...props}/>
             <PostsContainer/>
         </div>

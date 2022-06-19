@@ -18,16 +18,18 @@ let Post = ({message, like, follow}: PostType) => {
     return (
         <>
             <div className={p.item}>
-                          <div id={p.chat} >
-                   <div className={p.one}> <Avatar sx={{width: 56, height: 56}} src='https://upload.wikimedia.org/wikipedia/commons/3/33/Mr._Bean_2011.jpg'/></div>
-                     <div className={p.two}> {message}</div>
+                <div id={p.chat}>
+                    <div className={p.one}><Avatar sx={{width: 56, height: 56}}
+                                                   src='https://upload.wikimedia.org/wikipedia/commons/3/33/Mr._Bean_2011.jpg'/>
+                    </div>
+                    <div className={p.two}> {message}</div>
                 </div>
 
             </div>
 
 
-            <div style={{paddingLeft:'300px'}}>
-                <span><FavoriteBorderIcon color={'primary'} />12 </span>
+            <div style={{paddingLeft: '300px'}}>
+                <span><FavoriteBorderIcon color={'primary'}/>12 </span>
                 <span><ShareIcon/> </span>
             </div>
 

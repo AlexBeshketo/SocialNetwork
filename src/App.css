@@ -1,30 +1,58 @@
-.app-wrapper {
-  width: 100vw;
-  height: 100vh;
-  margin: auto 5px;
-  display: grid;
-  grid-template-areas:
-"header header header"
-"nav content content";
-  grid-template-rows: 60px 1fr;
-  grid-template-columns: 2fr 10fr;
+/*.wrapper {*/
+/*    min-height: 100%;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
 
 
+/*S gridami*/
+.main-container-grid {
+
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+
+
+    grid-template-columns: 0.5fr 1fr 1fr;
+    /*grid-template-rows: 0.2fr 2.9fr 0.1fr;*/
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+    "Header Header Header"
+    "Navbar Content Content"
+    "Footer Footer Footer";
 
 }
 
-.app-wrapper-content {
-  grid-area: content;
-  background: #eef2f3;
+.Header {
+
+    grid-area: Header;
 }
 
-
-.main-background {
-  background: url("https://img.freepik.com/free-photo/social-media-heart-like-icons-production-line-conyeror-belt-3d-render_601748-35543.jpg?w=1380") top no-repeat;
-
+.Navbar {
+    grid-area: Navbar;
+    border-right: 1px solid #dee2e6;
+    border-radius: 15px;
 }
 
+.Footer {
+    grid-area: Footer;
+    height: 20%;
 
+    /*margin-top: 0;*/
+    /*    position: fixed;*/
+
+    width: 100%;
+    /*bottom: 0;;*/
+}
+
+.Content {
+    grid-area: Content;
+    height: 100%;
+    /*margin: 0 auto;*/
+
+
+}
 
 
 

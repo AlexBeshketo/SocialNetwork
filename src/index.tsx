@@ -1,12 +1,11 @@
 import React from 'react';
 import './index.css';
-import ReactDOM from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import App from "./App";
-import store, {AppStateType} from "./state/redux-store";
+import store from "./state/redux-store";
 import {Provider} from "react-redux";
-import {Store} from "redux";
 import {createRoot} from "react-dom/client";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const rootElement = document.getElementById("root");

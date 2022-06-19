@@ -1,14 +1,9 @@
-import {
-    addNewMessage,
-    DialogsPropsType,
-    MessagesPropsType, updateNewMessage,
-
-} from "../../state/messages-reducer";
+import {addNewMessage, DialogsPropsType, MessagesPropsType} from "../../state/messages-reducer";
 import React from "react";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../state/redux-store";
-import {Dispatch} from "redux";
+import WithAuthRedirect from "../../hoc/withAuthRedirect";
 
 // type DialogsContainerType = {
 //     store: StorePropsType
@@ -44,36 +39,28 @@ import {Dispatch} from "redux";
 // }
 
 
-type MSTPType= {
-    users: Array<DialogsPropsType>
+type MSTPType = {
+    // users: Array<DialogsPropsType>
     messages: Array<MessagesPropsType>,
-    newMessagesBody: string,
-    isAuth: boolean
+
 }
 
-type MDTPType= {
-    addNewMessage: ()=> void
-    updateNewMessage: (text:string)=> void
+type MDTPType = {
+    addNewMessage: (newMessageBody:string) => void
+
 }
 
 export type AllDialogsPropsType = MSTPType & MDTPType
 
-let mapStateToProps = (state:AppStateType):MSTPType => {
+let mapStateToProps = (state: AppStateType): MSTPType => {
     return {
-        users: state.dialogsPage.users,
+        // users: state.dialogsPage.users,
         messages: state.dialogsPage.messages,
-        newMessagesBody: state.dialogsPage.newMessagesBody,
-        isAuth:state.auth.isAuth
 
     }
 }
 
-// let mapDispatchToProps = (dispatch:Dispatch):MDTPType => {
-//     return {
-//         addNewMessage ,
-//         updateNewMessage
-//     }
-// }
 
-export const DialogsContainer = connect(mapStateToProps, {addNewMessage ,updateNewMessage}) (Dialogs);
+
+export const DialogsContainer = WithAuthRedirect( connect(mapStateToProps, {addNewMessage})(Dialogs));
 

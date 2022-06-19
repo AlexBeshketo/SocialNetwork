@@ -3,13 +3,20 @@ import axios from "axios";
 import {ResponseUsersType} from "../components/Users/UsersContainer";
 import {PostDeleteAxiosType} from "../components/Users/Users";
 import {ProfileType} from "../state/profile-reducer";
-import {dataStateofLoginType} from "../state/auth-reducer";
-import {AxiosType} from "../components/Header/HeaderContainer";
+import {dataStateofLoginType, LoginType} from "../state/auth-reducer";
+
 
 
 type GetUsersType = {
     currentPage: number
     pageSize: number
+}
+
+export type AxiosType<T> = {
+    data: T
+    fieldsErrors: string[]
+    messages: string[]
+    resultCode: number
 }
 
 const instance = axios.create({
@@ -69,18 +76,47 @@ export const profileAPI = {
             })
     },
 
+    getStatus (userId:number) {
+        return instance.get<string>('profile/status/' + userId)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    updateStatus (status:string) {
+        return instance.put<AxiosType<{}>>('profile/status' , {status:status} )
+            .then(response => {
+                return response.data
+            })
+    }
+
 }
 
 export const loginAPI = {
 
-    getLogin() {
+    me () {
         return (
             instance.get<AxiosType<dataStateofLoginType>>('auth/me')
                 .then(response => {
                     return response.data
                 })
         )
+    },
+    login (email:string, password:string, rememberMe:boolean) {
+        return (
+            instance.post<AxiosType<{userId:string}>>('auth/login', {email, password, rememberMe})
+                .then(response => {
+                    return response.data
+                })
+        )
+    },
+    loginOut () {
+        return  instance.delete<AxiosType<any>>('auth/login')
+            .then(response => {
+                return response.data
+            })
     }
+
 }
 
 

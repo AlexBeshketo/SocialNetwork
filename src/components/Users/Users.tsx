@@ -4,7 +4,7 @@ import styles from "./users.module.css"
 import {usersType} from "../../state/users-reducer";
 import {NavLink} from "react-router-dom";
 import {Button} from "@mui/material";
-import {useNavigate} from "react-router";
+
 
 
 type UsersType = {
@@ -21,7 +21,7 @@ type UsersType = {
     onPageChanged: (currentPage: number) => void
 
     followingInProgress: []
-    isAuth: boolean
+
 }
 export type PostDeleteAxiosType = {
     resultCode: number
@@ -41,17 +41,8 @@ export const Users = (props: UsersType) => {
         }
 
 
-    let navigate = useNavigate();
-
-    useEffect(() => {
-        if (!props.isAuth){
-            return navigate("/login");
-        }
-    },[props.isAuth]);
-
-
-
         return (
+
             <div>
 
                 <div className={styles.wrapper}>
@@ -76,13 +67,15 @@ export const Users = (props: UsersType) => {
                                 <div className={styles.container_buttons}>
 
                                     {k.followed
-                                        ? <Button className={styles.button}
+                                        ? <Button style={{padding: '6px',
+                                            color:'black' }} className={styles.button}
                                                   disabled={props.followingInProgress.some(id => id === k.id)}
                                                   onClick={() => {
                                                       props.unfollow(k.id)
                                                   }}>Unfollow</Button>
 
-                                        : <Button className={styles.button}
+                                        : <Button style={{padding: '6px',
+                                            color:'black' }} className={styles.button}
                                                   disabled={props.followingInProgress.some(id => id === k.id)}
                                                   onClick={() => {
                                                       props.follow(k.id)

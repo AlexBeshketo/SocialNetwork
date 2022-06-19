@@ -4,8 +4,8 @@ import {Dispatch} from "redux";
 import {profileAPI} from "../api/api";
 
 export type ProfilePageType = {
+    status: string | null
     posts: Array<PostsPropsType>,
-    newPost: string,
     profile: ProfileType,
     isFetching:boolean
 
@@ -45,12 +45,13 @@ export type PostsPropsType = {
 
 
 const initialStateOfProfileReducer: ProfilePageType = {
+    status: '',
     isFetching: true,
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
         {id: 2, message: 'Its my first post ', like: 1, follow: 2},
     ],
-    newPost: '',
+
     profile: {
         "aboutMe": 'dfg',
         "contacts": {
@@ -80,44 +81,42 @@ export const profileReducer = (state: ProfilePageType = initialStateOfProfileRed
         case "ADD-POST":
             let newPost: PostsPropsType = {
                 id: new Date().getTime(),
-                message: state.newPost,
+                message: action.newPostBody,
                 like: 0,
                 follow: 0
             };
-            // let stateCopy = {...state};
-            // stateCopy.posts = [...state.posts]
-            // stateCopy.posts.push(newPost)
-            // stateCopy.newPost = '';
+
             return {...state, posts: [...state.posts, newPost]}
 
-        case "UPDATE-POST" :
-            return {...state, newPost: action.newText}
         case "SET-USER-PROFILE" :
             return {...state, profile: action.profile}
         case "TOOGLE-IS-FETCHING" :
             return {...state, isFetching: action.isFetching}
+        case "SET-USERS-STATUS" :
+            return {...state, status: action.status}
 
         default :
             return state
     }
 }
 
-export type profileReducerActionsType= addPostActionCreatorType | updatePostActionCreatorType | setUserProfileCreatorType | setToogleIsFetchingCreatorType
+export type profileReducerActionsType= addPostActionCreatorType | setUserProfileCreatorType | setToogleIsFetchingCreatorType | getUsersStatusType
 type addPostActionCreatorType= ReturnType<typeof  addPost>
-type updatePostActionCreatorType= ReturnType<typeof  updatePost>
+// type updatePostActionCreatorType= ReturnType<typeof  updatePost>
 type setUserProfileCreatorType= ReturnType<typeof  setUserProfile>
 type setToogleIsFetchingCreatorType= ReturnType<typeof  setToogleIsFetching>
+type getUsersStatusType= ReturnType<typeof  setUsersStatus>
 
-export const addPost = () => {
-    return {type: "ADD-POST"} as const
+export const addPost = (newPostBody:string) => {
+    return {type: "ADD-POST" , newPostBody} as const
 }
 
-export const updatePost = (newText: string) => {
-    return {
-        type: "UPDATE-POST",
-        newText: newText
-    } as const;
-}
+// export const updatePost = (newText: string) => {
+//     return {
+//         type: "UPDATE-POST",
+//         newText: newText
+//     } as const;
+// }
 
 export const setUserProfile = (profile:any) => {
     return {
@@ -134,6 +133,13 @@ export const setToogleIsFetching = (isFetching: boolean) => {
     } as const
 }
 
+export const setUsersStatus = (status:string) => {
+    return {
+        type: 'SET-USERS-STATUS',
+        status:status
+
+    } as const
+}
 
 
 export const getUserProfileThunkCreator= (userId:number) => (dispatch:Dispatch)=> {
@@ -144,3 +150,24 @@ export const getUserProfileThunkCreator= (userId:number) => (dispatch:Dispatch)=
                 dispatch(setToogleIsFetching(false))
             })
     }
+
+
+export const getStatusThunkCreator= (userId:number) => (dispatch:Dispatch)=> {
+    dispatch(setToogleIsFetching(true))
+    profileAPI.getStatus(userId)
+        .then(data => {
+            dispatch(setUsersStatus(data))
+            dispatch(setToogleIsFetching(false))
+        })
+}
+
+export const updateStatusThunkCreator= (status:string) => (dispatch:Dispatch)=> {
+    dispatch(setToogleIsFetching(true))
+    profileAPI.updateStatus(status)
+        .then(data => {
+            if (data.resultCode===0) {
+                dispatch(setUsersStatus(status))
+                dispatch(setToogleIsFetching(false))
+            }
+        })
+}

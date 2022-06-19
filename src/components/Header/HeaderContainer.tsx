@@ -2,7 +2,13 @@ import React from "react";
 import Header from "./Header";
 import {AppStateType} from "../../state/redux-store";
 import {connect} from "react-redux";
-import {dataStateofLoginType, loginThunkCreator, setToogleIsFetching, setUserData} from "../../state/auth-reducer";
+import {
+    dataStateofLoginType,
+    AuthorizationTC,
+    setToogleIsFetching,
+    setAuthUserData,
+    loginOut
+} from "../../state/auth-reducer";
 import WaitingLogo from "../WaitingLogo/WaitingLogo";
 import {loginAPI} from "../../api/api";
 
@@ -12,31 +18,28 @@ type mapStateToPropsType = {
     isAuth: boolean
 }
 type mapDispatchToPropsType = {
-    setUserData: (data: dataStateofLoginType) => void,
-    setToogleIsFetching: (isFetching: boolean) => void,
-    loginThunkCreator: ()=> void
+    // setAuthUserData: (data: dataStateofLoginType) => void,
+    // setToogleIsFetching: (isFetching: boolean) => void,
+    authorizationTC: ()=> void
+    loginOut: ()=> void
 }
 
 export type HeaderContainerPropsType = mapStateToPropsType & mapDispatchToPropsType  //типизация классовой компоненты//
 
-export type AxiosType<T> = {
-    data: T
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-}
+
+
 
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
 
     componentDidMount() {
-      this.props.loginThunkCreator() //thunk get zapros avtorizaciji
+      this.props.authorizationTC() //thunk get zapros avtorizaciji
     }
 
 
     render() {
         return (
             this.props.data ?
-                <Header data={this.props.data} isAuth={this.props.isAuth}/>
+                <Header loginOut={this.props.loginOut}  data={this.props.data} isAuth={this.props.isAuth}/>
                 : <WaitingLogo/>
         )
     }
@@ -53,5 +56,5 @@ export let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 
 
 export default connect(mapStateToProps, {
-    setUserData, setToogleIsFetching, loginThunkCreator
+    authorizationTC: AuthorizationTC, loginOut: loginOut
 })(HeaderContainer)

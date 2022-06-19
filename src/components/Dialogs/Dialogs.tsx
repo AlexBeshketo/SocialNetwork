@@ -1,64 +1,49 @@
-import h from './Dialogs.module.css'
 import {Messages} from "./Messages/Messages";
-import {DialogsItem} from './DialogItem/DialogsItem'
+import {DialogsUsers} from './DialogItem/DialogsUsers'
 
-import React, {ChangeEvent, useEffect} from "react";
+import React from "react";
 import {AllDialogsPropsType} from "./DialogsContainer";
-import {useNavigate} from "react-router";
+import MessageForm from "./MessageForm/MessageForm";
+import h from './Dialogs.module.css'
 
 
+function Dialogs({messages, addNewMessage}: AllDialogsPropsType) {
 
-// type DialogsType = {
-//     users: Array<DialogsPropsType>,
-//     messages: Array<MessagesPropsType>,
-//     newMessagesBody: string,
-//     addPost: () => void,
-//     onChangeCallback: (text: string) => void
-//
-//
-// }
+    //// messages
+    let dialogsElements = messages.map((d) =>
 
-function Dialogs(props:AllDialogsPropsType) {
-
-    let dialogsElements = props.users.map((d: { name: string; id: number; }) => <DialogsItem name={d.name} key={d.id}
-                                                                                             id={d.id}/>)
+        <DialogsUsers name={d.user} key={d.id}
+                      id={d.id}/>)
 
     let messagesElements =
-        props.messages.map((m: { message: string; id: number }) => <Messages key={m.id} message={m.message}/>)
+        messages.map((m: { message: string; id: string }) =>
+            <Messages key={m.id} message={m.message}/>
+        )
+    //////
 
-    const addPost = (e: React.MouseEvent<HTMLButtonElement>) => {
-        props.addNewMessage()
-    }
-
-    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.updateNewMessage(e.currentTarget.value)
-    }
+    // const addNewMessage = (newMessageBody:string) => {
+    //     props.addNewMessage(newMessageBody)
+    // }
 
 
-    let navigate = useNavigate();
-
-    useEffect(() => {
-        if (!props.isAuth){
-            return navigate("/login");
-        }
-    },[props.isAuth]);
 
     return (
-        <div className={h.dialogs}>
-            <div className={h.usersList}>
-                {dialogsElements}
-            </div>
+        <div className={h.main}>
 
-            <div className={h.messages}>
-                <div>{messagesElements}</div>
-                <div>
-                    <div><textarea onChange={onChange} value={props.newMessagesBody} placeholder={'Enter your message'}>ADD message</textarea></div>
-                    <div><button onClick={addPost}>Add message</button></div>
+
+            <div className={h.dialogs}>
+                <div className={h.usersList}>
+                    {dialogsElements}
+                </div>
+
+                <div className={h.messages}>
+                    <div>{messagesElements}</div>
+
                 </div>
 
             </div>
+            <MessageForm addNewMessage={addNewMessage}/>
         </div>
-
     )
 }
 

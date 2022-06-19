@@ -7,11 +7,19 @@ export type dataStateofLoginType = {
     login: string
 }
 
+
+export type LoginType = {
+    email: string,
+    password: string,
+    rememberMe?: boolean
+}
+
 export type initialStateOfLoginType = {
     data: dataStateofLoginType
     resultCode: number,
     messages: any,
-    isFetching?: boolean
+    isFetching?: boolean,
+    error: string | null
 }
 
 
@@ -24,7 +32,9 @@ let initialStateOfLogin = {
     resultCode: 123,
     messages: [],
     isFetching: true,
-    isAuth: false
+    isAuth: false,
+    error: ''
+
 }
 
 export const authReducer = (state: initialStateOfLoginType = initialStateOfLogin, action: authReducerType): any => {
@@ -33,7 +43,13 @@ export const authReducer = (state: initialStateOfLoginType = initialStateOfLogin
     switch (action.type) {
         case "SET-USER-DATA":
 
-            return {...state, ...action.data , isAuth:true};
+            return {...state, ...action.payload };
+
+        case "SET-ERROR":
+
+            return {...state, error: action.error };
+
+
 
         case "TOOGLE-IS-FETCHING":
 
@@ -44,14 +60,26 @@ export const authReducer = (state: initialStateOfLoginType = initialStateOfLogin
     }
 };
 
-type authReducerType= setUserDataACType | setToogleIsFetchingACType
-export type setUserDataACType = ReturnType<typeof setUserData>
+type authReducerType= setAuthUserDataType | setToogleIsFetchingACType | setErrorACType
+export type setAuthUserDataType = ReturnType<typeof setAuthUserData>
 export type setToogleIsFetchingACType = ReturnType<typeof setToogleIsFetching>
+export type setErrorACType = ReturnType<typeof setError>
 
-export const setUserData = (data:dataStateofLoginType) => {
+
+// type setAuthUserType= {
+//     id:number | null,email:string | null,login:string | null, isAuth:boolean
+// }
+export const setAuthUserData = (id:number| null,email:string| null,login:string| null, isAuth:boolean) => {
     return {
         type: 'SET-USER-DATA',
-        data:data
+        payload: {id,email,login, isAuth}
+    } as const
+}
+
+export const setError = (error:string) => {
+    return {
+        type: 'SET-ERROR',
+        error
     } as const
 }
 export const setToogleIsFetching= (isFetching:boolean) => {
@@ -66,18 +94,48 @@ export const setToogleIsFetching= (isFetching:boolean) => {
 
 
 
-export const loginThunkCreator = ()=>{
-return (dispatch:Dispatch) => {
+export const AuthorizationTC = ()=> (dispatch:Dispatch) => {
 
     dispatch(setToogleIsFetching(true))
 
-    loginAPI.getLogin()
+    loginAPI.me()
         .then(data => {
             if (data.resultCode === 0) {
-                dispatch(setUserData(data.data))
+                let {id, login,email}= data.data
+                dispatch(setAuthUserData(id,email, login, true))
             }
             dispatch (setToogleIsFetching(false))
         })
     }
-}
 
+
+
+export const loginTC = (email:string, password:string, rememberMe:boolean)=> (dispatch:any) => {
+
+        dispatch(setToogleIsFetching(true))
+
+        loginAPI.login(email, password, rememberMe)
+            .then(data => {
+                if (data.resultCode === 0) {
+                  dispatch(AuthorizationTC())
+                }
+                else {
+                    let error=data.messages.length>0 ? data.messages[0] : 'Some error'
+                    dispatch(setError(error))
+                }
+                dispatch (setToogleIsFetching(false))
+            })
+    }
+
+export const loginOut = ()=> (dispatch:any) => {
+
+    dispatch(setToogleIsFetching(true))
+
+    loginAPI.loginOut()
+        .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setAuthUserData(null,null, null, false))
+            }
+            dispatch (setToogleIsFetching(false))
+        })
+}

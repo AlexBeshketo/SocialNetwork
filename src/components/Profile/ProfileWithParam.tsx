@@ -5,5 +5,6 @@ import React from "react";
 export  const ProfileWithParam = () => {
     const match = useParams<string>()
 
+    // @ts-ignore
     return <ProfileContainer match={match}/>
 }
