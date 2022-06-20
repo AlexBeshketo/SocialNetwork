@@ -11,6 +11,7 @@ import {Avatar} from "@mui/material";
 import ProfileInfoSceleton from "./ProfileInfoSceleton";
 
 import {StatusClassComponent} from "./Status/StatusClassComponent";
+import {StatusFuncComp} from "./Status/StatusFuncComp";
 
 type ProfileInfoType = {
     profile: ProfileType
@@ -47,7 +48,7 @@ const ProfileInfo = ({profile, isFetching, status, updateStatus}: ProfileInfoTyp
                         <div>
                             <h4>{fullName}</h4>
 
-                            <StatusClassComponent status={status} updateStatus={updateStatus}/>
+                            <StatusFuncComp status={status} updateStatus={updateStatus}/>
 
                         </div>
                         <div className={p.looking_job_container}>

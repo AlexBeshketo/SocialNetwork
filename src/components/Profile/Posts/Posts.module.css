@@ -1,19 +1,20 @@
-
 /*.item {*/
 /*display: flex;*/
 /*}*/
 
 .addPostBorder {
+
     padding: 5px;
 
     border: #e2dada 1px solid;
-    display: flex;
-    flex-direction: column;
+    border-radius: 6px;
+
+
 }
 
 .container_addPostBorder {
     border: #e2dada 1px solid;
-    height: 200px;
+
     /* Левый нижний угол */
     padding: 10px; /* Поля вокруг текста */
     /*background: #39b54a; !* Цвет фона *!*/
@@ -23,14 +24,15 @@
 
 
 .posts {
-    margin-top: auto;
-    max-width: 80ch;
+    margin-top: 50px;
+    /*max-width: 80ch;*/
 
 }
 
 .btn_container {
-    border: 1px solid #e2dada;
 
+    border: 1px solid #e2dada;
+    border-radius: 5px;
     padding: 5px;
     display: flex;
     flex-direction: column;
@@ -38,7 +40,7 @@
 }
 
 .posts {
-    text-align: left;
+
 }
 
 /*///addpostform*/
@@ -47,10 +49,13 @@
     display: flex;
     justify-content: flex-start;
     width: 100%;
+    align-items: end;
+
 
 }
 
 .text_field {
+    height: 100%;
     width: 80%;
     flex: 3;
 
@@ -58,11 +63,22 @@
 
 .image_upload {
     padding: 5px;
+    display: flex;
+    justify-content: space-between;
 
 }
 
 
 /*btn*/
 .button {
-    order:3;
+    order: 3;
+    margin: 0;
+}
+
+.btn {
+    margin: 0px;
+    display: block;
+    order: 3;
+    padding: 5px;
+
 }

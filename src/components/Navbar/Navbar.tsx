@@ -22,6 +22,7 @@ function Navbar(props:AllNavbarType ) {
 
     return (
         <nav className={n.nav}>
+            <div className='container'>
             <div className={n.item}>
                 <NavLink className={checkActive()}  to='./profile'>Profile</NavLink>
             </div>
@@ -43,7 +44,7 @@ function Navbar(props:AllNavbarType ) {
             </div>
             <div className={n.friends}> Friends</div>
             <div>{friends}</div>
-
+            </div>
         </nav>
     )
 }

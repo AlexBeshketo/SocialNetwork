@@ -1,8 +1,11 @@
 import {useForm} from "react-hook-form";
-import {Button, Icon, TextField} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import p from "../Posts.module.css";
 import addform from "../Posts.module.css";
 import React from "react";
+import AddIcon from '@mui/icons-material/Add';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import GifBoxRoundedIcon from '@mui/icons-material/GifBoxRounded';
 
 
 type LoginUserModelType = {
@@ -11,11 +14,12 @@ type LoginUserModelType = {
 };
 
 type AddPostFormType = {
-    addPost: (newPostBody: string) => void
+    addPost: (newPostBody: string) => void,
+    buttonType: string
 }
 
 
-export function AddPostForm({addPost}: AddPostFormType) {
+export const AddPostForm = React.memo(({addPost , buttonType}: AddPostFormType) => {
 
 
     const {register, handleSubmit, resetField, formState: {errors}} = useForm<LoginUserModelType>();
@@ -38,30 +42,45 @@ export function AddPostForm({addPost}: AddPostFormType) {
                         {...register("post", {required: true, maxLength: 10})}
                         error={!!errors.post}
                         type='text'
-                        id="outlined-multiline-static"
-                        label="Enter your message"
+
+                        id="filled-multiline-flexible"
+                        label="Add your post"
+
                         multiline
                         color={"info"}
-                        style={{width: "100%"}}
-                        rows={6}
+                        style={{width: "100%", padding: "5px" , height:'75px'}}
+
+                        sx={{
+                            bgcolor: 'AppWorkspace',
+                            boxShadow: 1,
+                            borderRadius: 2
+                        }}
 
                     />
                 </div>
 
                 <div className={p.btn_container}>
-                    <div className={p.button}>
-                        <Button className={p.btn}
-                                style={{backgroundColor: '#6c7272'}}
-                                type="submit"
-                                variant="contained"
-                                sx={{mt: 3, mb: 2}}
-                        >Add Post </Button>
-                    </div>
+
+                    <Button className={p.btn}
+                            style={{backgroundColor: '#6c7272'}}
+                            size='small'
+                            type="submit"
+                            variant="contained"
+
+                    >{buttonType}</Button>
+
 
                     <div className={p.image_upload}>
 
-                        <Icon/>
 
+                        <label htmlFor="contained-button-file">
+                            <AddIcon/>
+
+                        </label>
+
+
+                        <AddAPhotoIcon/>
+                        <GifBoxRoundedIcon/>
                     </div>
 
                 </div>
@@ -69,6 +88,7 @@ export function AddPostForm({addPost}: AddPostFormType) {
 
             </div>
         </form>
+
     </>
-}
+});
 

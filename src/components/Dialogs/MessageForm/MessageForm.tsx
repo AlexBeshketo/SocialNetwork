@@ -16,7 +16,7 @@ type MessageFormType = {
 }
 
 
-const MessageForm = ({addNewMessage}: MessageFormType) => {
+const MessageForm = React.memo(({addNewMessage}: MessageFormType) => {
 
     const {register,resetField ,handleSubmit, formState: {errors}} = useForm<LoginUserModelType>();
     // get Values- odin iz tipov react hook form
@@ -71,7 +71,7 @@ const MessageForm = ({addNewMessage}: MessageFormType) => {
         </div>
 
     );
-};
+});
 
 export default MessageForm;
 

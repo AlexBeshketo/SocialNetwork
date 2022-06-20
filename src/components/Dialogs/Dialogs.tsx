@@ -3,8 +3,11 @@ import {DialogsUsers} from './DialogItem/DialogsUsers'
 
 import React from "react";
 import {AllDialogsPropsType} from "./DialogsContainer";
-import MessageForm from "./MessageForm/MessageForm";
 import h from './Dialogs.module.css'
+import {AddPostForm} from "../Profile/Posts/AddPostForm/AddPostForm";
+import {Avatar} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShareIcon from "@mui/icons-material/Share";
 
 
 function Dialogs({messages, addNewMessage}: AllDialogsPropsType) {
@@ -26,25 +29,46 @@ function Dialogs({messages, addNewMessage}: AllDialogsPropsType) {
     // }
 
 
-
     return (
-        <div className={h.main}>
+        <>
+
+            <div className={h.main}>
+                <div style={{textAlign: 'center', paddingTop: '30px'}}>
+                    <h2>Messages</h2>
+                </div>
+                <div>
+                    {messages.map((d) =>
+                        <div className={h.item}>
+                            <div id={h.talkbubble}>
+                                <div className={h.one}><Avatar sx={{width: 56, height: 56}}
+                                                               src='https://upload.wikimedia.org/wikipedia/commons/3/33/Mr._Bean_2011.jpg'/>
+                                </div>
+                                <div className={h.two}>
+                                    <div>{d.user}</div>
+                                    <div className={h.message}>{d.message}</div>
+                                    <div className={h.icons}>
+                                        <span><FavoriteBorderIcon color={'primary'}/> </span>
+                                        <span><ShareIcon/> </span>
+                                    </div>
+
+                                </div>
 
 
-            <div className={h.dialogs}>
-                <div className={h.usersList}>
-                    {dialogsElements}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                <div className={h.messages}>
-                    <div>{messagesElements}</div>
+                <div className={h.addMessageBorder}>
+                    <AddPostForm buttonType={'addMessage'} addPost={addNewMessage}/>
 
                 </div>
-
             </div>
-            <MessageForm addNewMessage={addNewMessage}/>
-        </div>
+        </>
     )
 }
 
 export default Dialogs
+
+
+// <MessageForm addNewMessage={addNewMessage}/>

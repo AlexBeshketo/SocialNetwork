@@ -12,30 +12,31 @@ type PostType = {
     id: number
 }
 
-let Post = ({message, like, follow}: PostType) => {
+const Post = React.memo(({message, like, follow}: PostType) => {
 
 
     return (
         <>
             <div className={p.item}>
-                <div id={p.chat}>
+                <div id={p.talkbubble}>
                     <div className={p.one}><Avatar sx={{width: 56, height: 56}}
                                                    src='https://upload.wikimedia.org/wikipedia/commons/3/33/Mr._Bean_2011.jpg'/>
                     </div>
-                    <div className={p.two}> {message}</div>
+                    <div className={p.two}>
+                        <div className={p.message}>  {message}</div>
+                        <div className={p.icons}>
+                            <span><FavoriteBorderIcon color={'primary'}/>{like}</span>
+                            <span><ShareIcon/>{follow}</span>
+                        </div>
+
+                    </div>
+
+
                 </div>
 
             </div>
-
-
-            <div style={{paddingLeft: '300px'}}>
-                <span><FavoriteBorderIcon color={'primary'}/>12 </span>
-                <span><ShareIcon/> </span>
-            </div>
-
-
         </>
     )
-}
+})
 
 export default Post

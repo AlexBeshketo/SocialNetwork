@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {TextField} from "@mui/material";
 
 type StatusType= {
@@ -7,6 +7,11 @@ type StatusType= {
 }
 
  export const StatusFuncComp = ({status, updateStatus}:StatusType) => {
+    
+    
+    useEffect(()=>{
+        setStatusRes(status)
+    },[status])
 
     const [editMode, setEditMode] = useState(false)
     const [statusRes, setStatusRes] = useState(status)

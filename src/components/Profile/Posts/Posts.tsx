@@ -31,7 +31,7 @@ function Posts({posts, addPost}: AllPostsPropsType) {
 
 
                 <div className={p.addPostBorder}>
-                <AddPostForm addPost={addPost}/>
+                <AddPostForm buttonType={'Add Post'} addPost={addPost}/>
                 </div>
 
         </>

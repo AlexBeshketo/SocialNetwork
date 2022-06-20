@@ -9,7 +9,7 @@ import News from "./components/News/News";
 
 import {NavbarContainer} from "./components/Navbar/NavbarContainer";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer";
-import {AppStateType} from "./state/redux-store";
+import {AppStateType, useAppSelector} from "./state/redux-store";
 import UsersAPIContainer from "./components/Users/UsersContainer";
 import {messagesReducerActionsType} from "./state/messages-reducer";
 import {profileReducerActionsType} from "./state/profile-reducer";
@@ -19,6 +19,8 @@ import {ProfileWithParam} from "./components/Profile/ProfileWithParam";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginComponent from "./components/Login/LoginComponent";
 import Footer from "./components/Footer/Footer";
+import LinearProgress from '@mui/material/LinearProgress';
+import {ErrorSnackbar} from "./components/ErrosSnackBar/errorsSnackBar";
 
 
 type ActionTypes = profileReducerActionsType | messagesReducerActionsType | UsersACTypes
@@ -31,6 +33,7 @@ export type AppPropsType = {
 
 function App(props: AppPropsType) {
 
+    const status = useAppSelector((state) => state.app.status)
 
     // let store= props.store.getState()
     // //
@@ -47,7 +50,12 @@ function App(props: AppPropsType) {
         <div className='main-container-grid'>
             <div className="Header">
                 <HeaderContainer/>
+                <div className="loading" >
+                    {status === 'loading' && <LinearProgress/>}
+                </div>
             </div>
+
+
             <div className="Navbar">
                 <NavbarContainer/>
             </div>
@@ -56,7 +64,7 @@ function App(props: AppPropsType) {
 
                 <Routes>
 
-                        <Route path={'/profile'} element={<ProfileContainer/>}/>
+                    <Route path={'/profile'} element={<ProfileContainer/>}/>
 
                     <Route path={'/profile/:userId'} element={<ProfileWithParam/>}/>
                     <Route path={'/users'} element={<UsersAPIContainer/>}/>
@@ -69,9 +77,12 @@ function App(props: AppPropsType) {
 
                 </Routes>
             </div>
+
             <div className="Footer">
+                <ErrorSnackbar/>
                 <Footer/>
             </div>
+
         </div>
 
     )

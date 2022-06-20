@@ -1,12 +1,17 @@
 
 .main {
     padding-top: 50px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+
+    position: relative;
 }
 
 
-
 .dialogs {
-/*display: grid;*/
+    /*display: grid;*/
     /*grid-template-columns: 2fr 10fr ;*/
     display: flex;
     justify-content: center;
@@ -15,13 +20,12 @@
 }
 
 .usersList {
-padding: 10px;
+    padding: 10px;
 }
 
 
-
 .user a {
-color: #4b4a4a;
+    color: #4b4a4a;
     text-decoration: none;
     padding: 10px;
 }
@@ -43,7 +47,8 @@ color: #4b4a4a;
 
 
 }
-.message{
+
+.message {
 
 }
 
@@ -64,3 +69,53 @@ color: #4b4a4a;
 .img {
     width: 800px
 }
+
+
+.addMessageBorder {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px;
+
+    border: #e2dada 1px solid;
+    border-radius: 6px;
+}
+
+
+#talkbubble {
+    width: 300px; height: 80px;
+    background: rgba(226, 218, 218, 0.24);
+    color: #666464;
+    position: relative;
+    border-radius: 10px;
+    margin-left:20px;
+
+    align-items: center ;
+    justify-content: space-between;
+    display: flex;
+}
+#talkbubble:before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 26px;
+
+    border-top: 13px solid transparent;
+    border-right: 26px solid rgba(226, 218, 218, 0.42);;
+    border-bottom: 13px solid transparent;
+}
+
+.one {
+    flex: 1;
+    padding-left: 0px;
+}
+
+.two {
+    flex:2
+}
+
+.item {
+    margin: 10px 0px 5px 15px;
+}
+
