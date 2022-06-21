@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import {ResponseUsersType} from "../components/Users/UsersContainer";
-import {PostDeleteAxiosType} from "../components/Users/Users";
+import {PostDeleteAxiosType} from "../components/Users/Users/Users";
 import {ProfileType} from "../state/profile-reducer";
 import {dataStateofLoginType, LoginType} from "../state/auth-reducer";
 

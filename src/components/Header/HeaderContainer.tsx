@@ -5,12 +5,8 @@ import {connect} from "react-redux";
 import {
     dataStateofLoginType,
     AuthorizationTC,
-    setToogleIsFetching,
-    setAuthUserData,
     loginOut
 } from "../../state/auth-reducer";
-import WaitingLogo from "../WaitingLogo/WaitingLogo";
-import {loginAPI} from "../../api/api";
 
 type mapStateToPropsType = {
     data: dataStateofLoginType
@@ -38,9 +34,9 @@ class HeaderContainer extends React.Component<HeaderContainerPropsType> {
 
     render() {
         return (
-            this.props.data ?
+
                 <Header loginOut={this.props.loginOut}  data={this.props.data} isAuth={this.props.isAuth}/>
-                : <WaitingLogo/>
+
         )
     }
 }

@@ -9,15 +9,11 @@ type MessagesPropsType = {
 
 
 
-export function Messages(props: MessagesPropsType) {
-
-
-
+export function Messages({message, key, ...props}: MessagesPropsType) {
 
     return (
         <>
-            <div className={h.message}>{props.message}</div>
-
+            <div className={h.message}>{message}</div>
         </>
     )
 }

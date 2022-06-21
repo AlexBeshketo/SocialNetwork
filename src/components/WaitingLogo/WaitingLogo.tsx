@@ -4,13 +4,24 @@ import React from 'react';
 //     isFetching: boolean
 // }
 
-const WaitingLogo = () => {
-    return (
-        <div style={{textAlign:'center'}}>
-            <img style={{width: '200px' , height: '200px' }} src="https://flevix.com/wp-content/uploads/2020/01/Circle-Loading.svg" alt="loading"/>
-            <p style={{fontWeight:'bold', fontSize: '25px', paddingBottom: '0px'}}>Loading, please wait</p>
-        </div>
-    );
-};
+import ContentLoader from "react-content-loader"
 
-export default WaitingLogo;
+
+
+export const WaitingLogo = (props:any) => (
+    <ContentLoader
+        speed={2}
+        width={300}
+        height={172}
+        viewBox="0 0 300 172"
+        backgroundColor="#f3f3f3"
+        foregroundColor="#ecebeb"
+        {...props}
+    >
+        <rect x="0" y="121" rx="0" ry="0" width="156" height="52" />
+        <rect x="230" y="178" rx="0" ry="0" width="195" height="27" />
+        <circle cx="72" cy="68" r="45" />
+    </ContentLoader>
+)
+
+

@@ -8,7 +8,7 @@ import {
     ProfileType,
     updateStatusThunkCreator
 } from "../../state/profile-reducer";
-import WaitingLogo from "../WaitingLogo/WaitingLogo";
+
 import WithAuthRedirect from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import p from './Profile.module.css'
@@ -63,11 +63,10 @@ class ProfileContainer extends React.Component<OwnProps> {
         return (
             <>
                 {
-                    this.props.profile ?
+
                         <Profile profile={this.props.profile} isFetching={this.props.isFetching}
                                  status={this.props.status} updateStatus={this.props.updateStatusThunkCreator}/>
-                        :
-                        <WaitingLogo/>
+
                 }
             </>
         );

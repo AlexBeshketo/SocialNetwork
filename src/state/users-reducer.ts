@@ -1,5 +1,9 @@
 import {folowwed_unfollowedAPI, usersAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {ActionsAppType, setAppStatusAC} from "./app-reducer";
+import {handleServerAppError} from "../utils/error-utils";
+import {followUnfollow} from "../utils/helper-utils";
+
 
 export type DialogsPageType = {
     users: Array<DialogsPropsType>,
@@ -71,19 +75,30 @@ let initialStateOfUsersPage: initialStateOfDialogsPageType = {
 }
 
 
+const updateObjectArray = (items:any, itemId:number, objPropName:string, newObjProps:any)=> {
+return [...items.map((u:any)=>{
+    if (u[objPropName]=== itemId) {
+        return {...u, ...newObjProps}
+    }
+    return u
+})
+    ]
+}
+
 export const usersReducer = (state = initialStateOfUsersPage, action: UsersACTypes): initialStateOfDialogsPageType => {
     switch (action.type) {
         case  "FOLLOW" : {
-            return {...state, users: [...state.users.map(k => k.id === action.id ? {...k, followed: true} : k)]}
+
+            return {...state, users: updateObjectArray(state.users, action.id, "id",{followed: true} )}
         }
         case  "UNFOLLOW" : {
-            return {...state, users: [...state.users.map(k => k.id === action.id ? {...k, followed: false} : k)]}
+            return {...state, users: updateObjectArray(state.users, action.id, "id",{followed: false} )}
         }
         case "SET-USER" : {
             return {...state, users: action.users}
         }
         case "SET-CURRENT-PAGE" : {
-            console.log({state,action})
+            console.log({state, action})
             return {...state, currentPage: action.currentPage}
         }
         case "SET-TOTAL-USERS-COUNT" : {
@@ -115,6 +130,7 @@ export type UsersACTypes =
     | setTotalUsersCountACType
     | ToogleIsFetchingACType
     | setFollowingInProgressACType
+    | ActionsAppType
 type followACType = ReturnType<typeof followSuccess>
 type unfollowACType = ReturnType<typeof unfollowSuccess>
 type addUsersACACType = ReturnType<typeof setUser>
@@ -177,60 +193,61 @@ export const setFollowingInProgress = (isFetching: boolean, userId: number) => {
 }
 
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return (dispatch: Dispatch) => { //запрос получение юзеров-thunk
+    return async (dispatch: Dispatch) => { //запрос получение юзеров-thunk
+
         dispatch(setToogleIsFetching(true)) //true-когда пошел запрос но запроса нет есть крутилка
+        dispatch(setAppStatusAC('loading'))
 // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,{withCredentials:true}) //в api находится
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
-            dispatch(setToogleIsFetching(false))
-            dispatch(setUser(data.items))
-            dispatch(setTotalUsersCount(data.totalCount))
-        })
+        const data = await usersAPI.getUsers(currentPage, pageSize)
+        dispatch(setUser(data.items))
+        dispatch(setTotalUsersCount(data.totalCount))
+        dispatch(setToogleIsFetching(false))
+        dispatch(setAppStatusAC('succeeded'))
     }
 }
 
 
 export const changePageThunkCreator = (currentPage: number, pageSize: number) => {
 
-    return (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch) => {
+
         dispatch(setToogleIsFetching(true))
+        dispatch(setAppStatusAC('loading'))
 
+        const data = await usersAPI.getUsers(currentPage, pageSize)
+        dispatch(setUser(data.items))
+        dispatch(setCurrentPage(currentPage))
+        dispatch(setToogleIsFetching(false))
+        dispatch(setAppStatusAC('succeeded'))
 
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
-
-            dispatch(setToogleIsFetching(false))
-            dispatch(setUser(data.items))
-            dispatch(setCurrentPage(currentPage))
-
-        })
     }
 }
+
+
+
+
+
+
 
 
 export const followThunkCreator = (userId: number) => {
-    return (dispatch: Dispatch) => {
-
-        dispatch(setFollowingInProgress(true, userId))
-        folowwed_unfollowedAPI.followUsers(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(followSuccess(userId))
-                }
-                dispatch(setFollowingInProgress(false, userId))
-            })
+    return async (dispatch: Dispatch) => {
+        followUnfollow(dispatch, userId, folowwed_unfollowedAPI.followUsers, followSuccess)
     }
 }
+
 
 
 export const unfollowThunkCreator = (userId: number) => {
-    return (dispatch: Dispatch) => {
+    return async (dispatch: Dispatch) => {
 
-        dispatch(setFollowingInProgress(true, userId))
-        folowwed_unfollowedAPI.unfollowUsers(userId)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(unfollowSuccess(userId))
-                }
-                dispatch(setFollowingInProgress(false, userId))
-            })
+         followUnfollow(dispatch, userId, folowwed_unfollowedAPI.unfollowUsers, unfollowSuccess)
     }
 }
+
+
+
+
+
+
+

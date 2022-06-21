@@ -17,7 +17,7 @@ export type ProfilePostType = {
 
 }
 
-function Profile(props:ProfilePostType) {
+function Profile({...props}:ProfilePostType) {
 
 
 
@@ -25,6 +25,7 @@ function Profile(props:ProfilePostType) {
         <div className={p.main}>
             <ProfileInfo {...props}/>
             <PostsContainer/>
+
         </div>
     )
 }

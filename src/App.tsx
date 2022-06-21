@@ -35,26 +35,15 @@ function App(props: AppPropsType) {
 
     const status = useAppSelector((state) => state.app.status)
 
-    // let store= props.store.getState()
-    // //
-    // // const profilePage = store.profilePage
-    // // const dialogs = store.dialogsPage.users
-    // // const newMessagesBody=store.dialogsPage.newMessagesBody
-    // // const messages = store.dialogsPage.messages
-    // const navbarPage = store.sideBar.names
-    // const navbarPageBoolean = store.sideBar.isTrue;
-
-
     return (
 
         <div className='main-container-grid'>
             <div className="Header">
                 <HeaderContainer/>
-                <div className="loading" >
+                <div className="loading">
                     {status === 'loading' && <LinearProgress/>}
                 </div>
             </div>
-
 
             <div className="Navbar">
                 <NavbarContainer/>
@@ -90,10 +79,3 @@ function App(props: AppPropsType) {
 
 export default App;
 
-
-// <div className="container">
-//     <div className="Header"></div>
-//     <div className="Navbar"></div>
-//     <div className="Footer"></div>
-//     <div className="Content"></div>
-// </div>

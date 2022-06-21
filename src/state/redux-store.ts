@@ -1,11 +1,14 @@
-import {applyMiddleware, combineReducers, createStore, Store} from "redux";
+import {applyMiddleware, combineReducers, compose, createStore, Store} from "redux";
 import {profileReducer} from "./profile-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 import {messagesReducer} from "./messages-reducer";
 
 import {usersReducer} from "./users-reducer";
 import {authReducer} from "./auth-reducer";
-import thunkMiddleware from "redux-thunk"; ///thunk
+import thunkMiddleware from "redux-thunk";
+import {TypedUseSelectorHook, useSelector} from "react-redux";
+import {appReducer} from "./app-reducer";
+
 
 
 
@@ -16,16 +19,28 @@ export const rootReducer = combineReducers({
     dialogsPage: messagesReducer,
     usersPage: usersReducer,
     auth: authReducer,
-
-
+    app:appReducer
 
 
 })
-
+    /// dlya rrashirenija redux-devtools
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    }
+}
 
 export type AppStateType = ReturnType<typeof rootReducer>
 
-const store: Store<AppStateType, any> = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+
+export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
+
+
+
 
 export default store
 

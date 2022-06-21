@@ -1,27 +1,29 @@
-
 // Types
 import {Dispatch} from "redux";
 import {profileAPI} from "../api/api";
+import {ActionsAppType, setAppStatusAC} from "./app-reducer";
+import {handleServerAppError} from "../utils/error-utils";
+
 
 export type ProfilePageType = {
     status: string | null
     posts: Array<PostsPropsType>,
     profile: ProfileType,
-    isFetching:boolean
+    isFetching: boolean
 
 }
-export type  ProfileType= {
+export type  ProfileType = {
     "aboutMe": string | null,
     "contacts": {
         "facebook": string,
-        "website":  string | null,
+        "website": string | null,
         "vk": string | null,
         "twitter": string | null,
         "instagram": string | null,
         "youtube": string | null,
         "github": string | null,
         "mainLink": string | null,
-        "linkedin" : string | null
+        "linkedin": string | null
     },
     "lookingForAJob": boolean,
     "lookingForAJobDescription": string | null,
@@ -29,7 +31,7 @@ export type  ProfileType= {
     "userId": number,
     "photos": {
         "small": string | null,
-        "large":  string | null
+        "large": string | null
     }
 }
 
@@ -41,21 +43,19 @@ export type PostsPropsType = {
 }
 
 
-
-
-
 const initialStateOfProfileReducer: ProfilePageType = {
     status: '',
     isFetching: true,
     posts: [
         {id: 1, message: 'Hi, how are you?', like: 2, follow: 2},
-        {id: 2, message: 'Its my first post ', like: 1, follow: 2},
+        {id: 2, message: 'Its my first post ', like: 1, follow: 1},
+        {id: 3, message: 'Whats your name? ', like: 1, follow: 4},
     ],
 
     profile: {
         "aboutMe": 'dfg',
         "contacts": {
-            "linkedin" : 'dgr',
+            "linkedin": 'dgr',
             "facebook": 'dfg',
             "website": 'dfg',
             "vk": 'dfg',
@@ -100,15 +100,20 @@ export const profileReducer = (state: ProfilePageType = initialStateOfProfileRed
     }
 }
 
-export type profileReducerActionsType= addPostActionCreatorType | setUserProfileCreatorType | setToogleIsFetchingCreatorType | getUsersStatusType
-type addPostActionCreatorType= ReturnType<typeof  addPost>
+export type profileReducerActionsType =
+    addPostActionCreatorType
+    | setUserProfileCreatorType
+    | setToogleIsFetchingCreatorType
+    | getUsersStatusType
+    | ActionsAppType
+type addPostActionCreatorType = ReturnType<typeof addPost>
 // type updatePostActionCreatorType= ReturnType<typeof  updatePost>
-type setUserProfileCreatorType= ReturnType<typeof  setUserProfile>
-type setToogleIsFetchingCreatorType= ReturnType<typeof  setToogleIsFetching>
-type getUsersStatusType= ReturnType<typeof  setUsersStatus>
+type setUserProfileCreatorType = ReturnType<typeof setUserProfile>
+type setToogleIsFetchingCreatorType = ReturnType<typeof setToogleIsFetching>
+type getUsersStatusType = ReturnType<typeof setUsersStatus>
 
-export const addPost = (newPostBody:string) => {
-    return {type: "ADD-POST" , newPostBody} as const
+export const addPost = (newPostBody: string) => {
+    return {type: "ADD-POST", newPostBody} as const
 }
 
 // export const updatePost = (newText: string) => {
@@ -118,7 +123,7 @@ export const addPost = (newPostBody:string) => {
 //     } as const;
 // }
 
-export const setUserProfile = (profile:any) => {
+export const setUserProfile = (profile: any) => {
     return {
         type: "SET-USER-PROFILE",
         profile: profile
@@ -133,41 +138,46 @@ export const setToogleIsFetching = (isFetching: boolean) => {
     } as const
 }
 
-export const setUsersStatus = (status:string) => {
+export const setUsersStatus = (status: string) => {
     return {
         type: 'SET-USERS-STATUS',
-        status:status
+        status: status
 
     } as const
 }
 
 
-export const getUserProfileThunkCreator= (userId:number) => (dispatch:Dispatch)=> {
+export const getUserProfileThunkCreator = (userId: number) => async (dispatch: Dispatch) => {
     dispatch(setToogleIsFetching(true))
-        profileAPI.getUserProfile(userId)
-            .then(data => {
-                dispatch(setUserProfile(data))
-                dispatch(setToogleIsFetching(false))
-            })
-    }
+    dispatch(setAppStatusAC('loading'))
 
+    const data = await profileAPI.getUserProfile(userId)
+    dispatch(setUserProfile(data))
+    dispatch(setToogleIsFetching(false))
+    dispatch(setAppStatusAC('succeeded'))
 
-export const getStatusThunkCreator= (userId:number) => (dispatch:Dispatch)=> {
-    dispatch(setToogleIsFetching(true))
-    profileAPI.getStatus(userId)
-        .then(data => {
-            dispatch(setUsersStatus(data))
-            dispatch(setToogleIsFetching(false))
-        })
 }
 
-export const updateStatusThunkCreator= (status:string) => (dispatch:Dispatch)=> {
+
+export const getStatusThunkCreator = (userId: number) => async (dispatch: Dispatch) => {
     dispatch(setToogleIsFetching(true))
-    profileAPI.updateStatus(status)
-        .then(data => {
-            if (data.resultCode===0) {
-                dispatch(setUsersStatus(status))
-                dispatch(setToogleIsFetching(false))
-            }
-        })
+    dispatch(setAppStatusAC('loading'))
+    const data = await profileAPI.getStatus(userId)
+    dispatch(setUsersStatus(data))
+    dispatch(setToogleIsFetching(false))
+    dispatch(setAppStatusAC('succeeded'))
+
+}
+
+export const updateStatusThunkCreator = (status: string) => async (dispatch: Dispatch) => {
+    dispatch(setToogleIsFetching(true))
+    const data = await profileAPI.updateStatus(status)
+    if (data.resultCode === 0) {
+        dispatch(setUsersStatus(status))
+        dispatch(setToogleIsFetching(false))
+    }
+    else {
+        handleServerAppError(dispatch, data)
+    }
+
 }

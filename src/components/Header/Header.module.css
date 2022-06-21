@@ -1,7 +1,7 @@
 .header {
     position:relative;
     grid-area: header;
-    background-color: #eef2f3;
+    background-color: #ffffff;
     border-bottom: rgba(9, 9, 9, 0.06) 1px solid;
 
 }

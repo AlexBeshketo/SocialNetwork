@@ -1,10 +1,7 @@
-import {Messages} from "./Messages/Messages";
-import {DialogsUsers} from './DialogItem/DialogsUsers'
-
 import React from "react";
-import {AllDialogsPropsType} from "./DialogsContainer";
-import h from './Dialogs.module.css'
-import {AddPostForm} from "../Profile/Posts/AddPostForm/AddPostForm";
+import {AllDialogsPropsType} from "../DialogsContainer";
+import h from '../Dialogs.module.css'
+import {TextInputMessageForm} from "../../Profile/Posts/AddPostForm/TextInputMessageForm";
 import {Avatar} from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShareIcon from "@mui/icons-material/Share";
@@ -13,25 +10,19 @@ import ShareIcon from "@mui/icons-material/Share";
 function Dialogs({messages, addNewMessage}: AllDialogsPropsType) {
 
     //// messages
-    let dialogsElements = messages.map((d) =>
-
-        <DialogsUsers name={d.user} key={d.id}
-                      id={d.id}/>)
-
-    let messagesElements =
-        messages.map((m: { message: string; id: string }) =>
-            <Messages key={m.id} message={m.message}/>
-        )
-    //////
-
-    // const addNewMessage = (newMessageBody:string) => {
-    //     props.addNewMessage(newMessageBody)
-    // }
+    // let dialogsElements = messages.map((d) =>
+    //
+    //     <DialogsUsers name={d.user} key={d.id}
+    //                   id={d.id}/>)
+    //
+    // let messagesElements =
+    //     messages.map((m: { message: string; id: string }) =>
+    //         <Messages key={m.id} message={m.message}/>
+    //     )
 
 
     return (
         <>
-
             <div className={h.main}>
                 <div style={{textAlign: 'center', paddingTop: '30px'}}>
                     <h2>Messages</h2>
@@ -52,15 +43,13 @@ function Dialogs({messages, addNewMessage}: AllDialogsPropsType) {
                                     </div>
 
                                 </div>
-
-
                             </div>
                         </div>
                     )}
                 </div>
 
                 <div className={h.addMessageBorder}>
-                    <AddPostForm buttonType={'addMessage'} addPost={addNewMessage}/>
+                    <TextInputMessageForm buttonType={'addMessage'} addPost={addNewMessage}/>
 
                 </div>
             </div>

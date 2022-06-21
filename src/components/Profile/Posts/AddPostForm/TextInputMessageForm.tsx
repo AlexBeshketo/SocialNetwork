@@ -19,7 +19,7 @@ type AddPostFormType = {
 }
 
 
-export const AddPostForm = React.memo(({addPost , buttonType}: AddPostFormType) => {
+export const TextInputMessageForm = React.memo(({addPost , buttonType}: AddPostFormType) => {
 
 
     const {register, handleSubmit, resetField, formState: {errors}} = useForm<LoginUserModelType>();

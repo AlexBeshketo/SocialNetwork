@@ -1,6 +1,6 @@
-import {addNewMessage, DialogsPropsType, MessagesPropsType} from "../../state/messages-reducer";
+import {addNewMessage, MessagesPropsType} from "../../state/messages-reducer";
 import React from "react";
-import Dialogs from "./Dialogs";
+import Dialogs from "./Dialogs/Dialogs";
 import {connect} from "react-redux";
 import {AppStateType} from "../../state/redux-store";
 import WithAuthRedirect from "../../hoc/withAuthRedirect";
@@ -46,7 +46,7 @@ type MSTPType = {
 }
 
 type MDTPType = {
-    addNewMessage: (newMessageBody:string) => void
+    addNewMessage: (newMessageBody: string) => void
 
 }
 
@@ -54,13 +54,10 @@ export type AllDialogsPropsType = MSTPType & MDTPType
 
 let mapStateToProps = (state: AppStateType): MSTPType => {
     return {
-        // users: state.dialogsPage.users,
         messages: state.dialogsPage.messages,
-
     }
 }
 
 
-
-export const DialogsContainer = WithAuthRedirect( connect(mapStateToProps, {addNewMessage})(Dialogs));
+export const DialogsContainer = WithAuthRedirect(connect(mapStateToProps, {addNewMessage})(Dialogs));
 

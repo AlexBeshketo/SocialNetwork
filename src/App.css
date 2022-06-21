@@ -27,6 +27,7 @@
 .Header {
 
     grid-area: Header;
+    position: relative;
 }
 
 .Navbar {
@@ -50,9 +51,19 @@
     grid-area: Content;
     height: 100%;
     /*margin: 0 auto;*/
-
-
 }
+
+
+/*/// loading//*/
+
+.loading{
+
+    top:0;
+    left: 0;
+}
+
+
+
 
 
 

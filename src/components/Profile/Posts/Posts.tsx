@@ -3,7 +3,7 @@ import p from './Posts.module.css'
 
 import React from "react";
 import {AllPostsPropsType} from "./PostsContainer";
-import {AddPostForm} from "./AddPostForm/AddPostForm";
+import {TextInputMessageForm} from "./AddPostForm/TextInputMessageForm";
 
 
 function Posts({posts, addPost}: AllPostsPropsType) {
@@ -15,24 +15,18 @@ function Posts({posts, addPost}: AllPostsPropsType) {
     //     props.addPost(newPostBody)
     // }
 
-    // const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    //     props.updatePost(e.currentTarget.value)
-    // }
 
     return (
         <>
-            {/*<div>*/}
-            {/*    <h2>My posts</h2>*/}
-            {/*</div>*/}
 
             <div className={p.posts}>
                 {postsElement}
             </div>
 
 
-                <div className={p.addPostBorder}>
-                <AddPostForm buttonType={'Add Post'} addPost={addPost}/>
-                </div>
+            <div className={p.addPostBorder}>
+                <TextInputMessageForm buttonType={'Add Post'} addPost={addPost}/>
+            </div>
 
         </>
     )
